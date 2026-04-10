@@ -8,7 +8,7 @@
     <meta name="theme-color" content="#000000">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     
-    <title>IPTV OSCORP</title>
+    <title>IPTV NETRANGE</title>
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&display=swap" rel="stylesheet">
@@ -16,7 +16,7 @@
     <style>
         :root {
             --bg-deep: #000000;
-            --main-color: #FFD700; /* Tom GOLD */
+            --main-color: #FF6600; /* Tom LARANJA NETRANGE */
             --font-xs: 1.8vh; --font-sm: 2.2vh; --font-md: 3vh; --font-lg: 5vh;
         }
 
@@ -78,9 +78,9 @@
         .clock-date { font-size: 2.5vh; color: #ccc; font-weight: 600; margin-top: 0.8vh; }
         
         @keyframes pulse-btn {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.4); }
-            50% { transform: scale(1.15); box-shadow: 0 0 20px 5px rgba(255, 215, 0, 0.8); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); }
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 102, 0, 0.4); }
+            50% { transform: scale(1.15); box-shadow: 0 0 20px 5px rgba(255, 102, 0, 0.8); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 102, 0, 0); }
         }
         .top-actions { display: flex; gap: 2vh; }
         .power-btn { width: 7vh; height: 7vh; font-size: 3.5vh; background: transparent; border: none; color: #666; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; border-radius: 50%; }
@@ -126,7 +126,7 @@
 
         .buffer-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 50; display: none; flex-direction: column; align-items: center; justify-content: center; }
         
-        .buffer-spinner { font-size: 8vh; color: var(--main-color); text-shadow: 0 0 15px rgba(255, 215, 0, 0.5); }
+        .buffer-spinner { font-size: 8vh; color: var(--main-color); text-shadow: 0 0 15px rgba(255, 102, 0, 0.5); }
 
         .meta { padding: 25px; flex: 1; height: 100%; overflow-y: auto; background: #0a0a0c; display: flex; flex-direction: column; }
         .meta-title { font-size: var(--font-lg); color: var(--main-color); font-weight: 900; margin-bottom: 1vh; }
@@ -182,8 +182,8 @@
         /* --- CONTORNO ESPECÍFICO STB APENAS NO VOD --- */
         .vod-item.focused {
             transform: scale(1.1) translateZ(0) !important;
-            border: 4px solid var(--main-color) !important; /* Borda grossa em volta da capa */
-            box-shadow: 0 0 25px 8px rgba(255, 215, 0, 0.8) !important; /* Brilho STB */
+            border: 4px solid var(--main-color) !important; 
+            box-shadow: 0 0 25px 8px rgba(255, 102, 0, 0.8) !important; 
             z-index: 100;
         }
 
@@ -237,7 +237,7 @@
 
     <div id="login-layer" class="layer flex-center hide">
         <div class="login-box">
-            <div class="logo-txt"><span style="color:#fff">IPTV</span>&nbsp;<span class="theme-text">OSCORP</span></div>
+            <div class="logo-txt"><span style="color:#fff">IPTV</span>&nbsp;<span class="theme-text">NETRANGE</span></div>
             <input type="text" id="i0" class="inp focusable" placeholder="URL DNS" autocomplete="off">
             <input type="text" id="i1" class="inp focusable" placeholder="USUÁRIO" autocomplete="off">
             <input type="password" id="i2" class="inp focusable" placeholder="SENHA" autocomplete="off">
@@ -270,11 +270,10 @@
 
     <div id="dash-layer" class="layer hide">
         <div class="top-bar">
-            <div class="dash-logo"><span style="color:#fff">IPTV</span>&nbsp;<span class="theme-text">OSCORP</span></div>
+            <div class="dash-logo"><span style="color:#fff">IPTV</span>&nbsp;<span class="theme-text">NETRANGE</span></div>
             <div class="dash-clock"><div id="clock-time" class="clock-time">--:--</div><div id="clock-date" class="clock-date">--/--/----</div></div>
             <div class="top-actions">
-                <div id="m3" class="power-btn focusable" onclick="App.openSettings()"><i class="fas fa-cog"></i></div>
-                <div id="m4" class="power-btn focusable" onclick="App.logout()"><i class="fas fa-power-off"></i></div>
+                <div id="m3" class="power-btn focusable" onclick="App.logout()"><i class="fas fa-power-off"></i></div>
             </div>
         </div>
         <div class="dash-grid">
@@ -319,7 +318,7 @@
             </div>
             
             <div class="meta">
-                <div id="meta-title" class="meta-title"><span style="color:#fff">IPTV</span>&nbsp;OSCORP</div>
+                <div id="meta-title" class="meta-title"><span style="color:#fff">IPTV</span>&nbsp;NETRANGE</div>
                 <div id="meta-desc" class="meta-desc"></div>
                 
                 <div class="keys">
@@ -466,12 +465,18 @@
             validCategories: null, scr: 0, zone: 0, idx: 0, lastCatIdx: -1, creds: {}, fullData: [], playingId: null,
             cfg: { filter: false, format: 'ts_native', lang: 'pt' }, userInfo: null, lastEnter: 0,
             categoryDataCache: null, showingEpisodes: false, lastScreenSwitch: 0,
-            seriesDataCache: null, lastSeriesIdx: 0, lastTap: 0, tapTimer: null, pageSize: 50, mobileRenderedPages: 1,
+            seriesDataCache: null, lastSeriesIdx: 0, lastTap: 0, tapTimer: null, 
+            pageSize: 150, // DOM Ampliado: Reduz drasticamente necessidade de loading
+            mobileRenderedPages: 1,
 
             pad: function(n) { return (n < 10) ? ("0" + n) : n; },
             smartSort: function(a, b) { var nameA = (a.name || a.title || "").toLowerCase(); var nameB = (b.name || b.title || "").toLowerCase(); try { return nameA.localeCompare(nameB, undefined, { numeric: true, sensitivity: 'base' }); } catch (e) { return nameA < nameB ? -1 : 1; } },
 
-            i18n: { 'pt': { ph_dns: 'URL DNS', ph_user: 'USUÁRIO', ph_pass: 'SENHA', btn_login: 'CONECTAR', load_init: 'INICIANDO...', load_auth: 'AUTENTICANDO...', load_net: 'REDE...', err_net: 'Falha Conexão', err_auth: 'Login Inválido', set_title: 'MINHA CONTA', set_u: 'USUÁRIO:', set_e: 'VENCE:', set_c: 'TELAS:', set_d: 'CRIADO:', set_opt: 'OPÇÕES', set_filter: 'XXX:', set_format: 'FMT:', set_lang: 'IDIOMA:', set_back: 'VOLTAR', yes: 'SIM', no: 'NÃO', fmt_def: 'PADRÃO', dash_live: 'TV AO VIVO', dash_movie: 'FILMES', dash_series: 'SÉRIES', lbl_exp: 'VENCIMENTO', lbl_conn: 'TELAS', cat_title: 'MENU', cat_fav: '⭐ FAVORITOS', search_ph: 'BUSCAR...', empty: 'Vazio', loading: 'CARREGANDO...', loading_ep: 'EPISÓDIOS...', no_ep: 'Sem episódios.', osd_play: '▶ TOCA', osd_pause: '⏸ PAUSA', osd_lost: 'SEM SINAL', key_fs: 'TELA CHEIA (R)', key_top: 'TOPO (G)', key_search: 'BUSCA (Y)', key_menu: 'MENU (B)', tot_chan: 'CANAIS', tot_mov: 'FILMES', tot_ser: 'SÉRIES', tot_pre: 'TOTAL: ', def_movie: 'Filme', def_ep: 'Episódio', unlimited: 'Ilimitado', unknown: 'Desconhecido', flag: '🇧🇷 PT', btn_out: 'SAIR / DESLOGAR' } },
+            i18n: { 
+                'pt': { ph_dns: 'URL DNS', ph_user: 'USUÁRIO', ph_pass: 'SENHA', btn_login: 'CONECTAR', load_init: 'INICIANDO...', load_auth: 'AUTENTICANDO...', load_net: 'REDE...', err_net: 'Falha Conexão', err_auth: 'Login Inválido', set_title: 'MINHA CONTA', set_u: 'USUÁRIO:', set_e: 'VENCE:', set_c: 'TELAS:', set_d: 'CRIADO:', set_opt: 'OPÇÕES', set_filter: 'XXX:', set_format: 'FMT:', set_lang: 'IDIOMA:', set_back: 'VOLTAR', yes: 'SIM', no: 'NÃO', fmt_def: 'PADRÃO', dash_live: 'TV AO VIVO', dash_movie: 'FILMES', dash_series: 'SÉRIES', lbl_exp: 'VENCIMENTO', lbl_conn: 'TELAS', cat_title: 'MENU', cat_fav: '⭐ FAVORITOS', search_ph: 'BUSCAR...', empty: 'Vazio', loading: 'CARREGANDO...', loading_ep: 'EPISÓDIOS...', no_ep: 'Sem episódios.', osd_play: '▶ TOCA', osd_pause: '⏸ PAUSA', osd_lost: 'SEM SINAL', key_fs: 'TELA CHEIA (R)', key_top: 'TOPO (G)', key_search: 'BUSCA (Y)', key_menu: 'CONFIG. (B)', tot_chan: 'CANAIS', tot_mov: 'FILMES', tot_ser: 'SÉRIES', tot_pre: 'TOTAL: ', def_movie: 'Filme', def_ep: 'Episódio', unlimited: 'Ilimitado', unknown: 'Desconhecido', flag: '🇧🇷 PT', btn_out: 'SAIR / DESLOGAR' },
+                'en': { ph_dns: 'DNS URL', ph_user: 'USERNAME', ph_pass: 'PASSWORD', btn_login: 'CONNECT', load_init: 'INITIALIZING...', load_auth: 'AUTHENTICATING...', load_net: 'NETWORK...', err_net: 'Connection Failed', err_auth: 'Invalid Login', set_title: 'MY ACCOUNT', set_u: 'USER:', set_e: 'EXPIRES:', set_c: 'SCREENS:', set_d: 'CREATED:', set_opt: 'OPTIONS', set_filter: 'XXX:', set_format: 'FMT:', set_lang: 'LANGUAGE:', set_back: 'BACK', yes: 'YES', no: 'NO', fmt_def: 'DEFAULT', dash_live: 'LIVE TV', dash_movie: 'MOVIES', dash_series: 'SERIES', lbl_exp: 'EXPIRATION', lbl_conn: 'SCREENS', cat_title: 'MENU', cat_fav: '⭐ FAVORITES', search_ph: 'SEARCH...', empty: 'Empty', loading: 'LOADING...', loading_ep: 'EPISODES...', no_ep: 'No episodes.', osd_play: '▶ PLAY', osd_pause: '⏸ PAUSE', osd_lost: 'NO SIGNAL', key_fs: 'FULLSCREEN (R)', key_top: 'TOP (G)', key_search: 'SEARCH (Y)', key_menu: 'CONFIG (B)', tot_chan: 'CHANNELS', tot_mov: 'MOVIES', tot_ser: 'SERIES', tot_pre: 'TOTAL: ', def_movie: 'Movie', def_ep: 'Episode', unlimited: 'Unlimited', unknown: 'Unknown', flag: '🇺🇸 EN', btn_out: 'LOGOUT' },
+                'es': { ph_dns: 'URL DNS', ph_user: 'USUARIO', ph_pass: 'CONTRASEÑA', btn_login: 'CONECTAR', load_init: 'INICIANDO...', load_auth: 'AUTENTICANDO...', load_net: 'RED...', err_net: 'Falla Conexión', err_auth: 'Login Inválido', set_title: 'MI CUENTA', set_u: 'USUARIO:', set_e: 'VENCE:', set_c: 'PANTALLAS:', set_d: 'CREADO:', set_opt: 'OPCIONES', set_filter: 'XXX:', set_format: 'FMT:', set_lang: 'IDIOMA:', set_back: 'VOLVER', yes: 'SÍ', no: 'NO', fmt_def: 'DEFECTO', dash_live: 'TV EN VIVO', dash_movie: 'PELÍCULAS', dash_series: 'SERIES', lbl_exp: 'VENCIMIENTO', lbl_conn: 'PANTALLAS', cat_title: 'MENÚ', cat_fav: '⭐ FAVORITOS', search_ph: 'BUSCAR...', empty: 'Vacío', loading: 'CARGANDO...', loading_ep: 'EPISODIOS...', no_ep: 'Sin episodios.', osd_play: '▶ REPRODUCIR', osd_pause: '⏸ PAUSA', osd_lost: 'SIN SEÑAL', key_fs: 'PANTALLA (R)', key_top: 'ARRIBA (G)', key_search: 'BUSCAR (Y)', key_menu: 'CONFIG (B)', tot_chan: 'CANALES', tot_mov: 'PELÍCULAS', tot_ser: 'SERIES', tot_pre: 'TOTAL: ', def_movie: 'Película', def_ep: 'Episodio', unlimited: 'Ilimitado', unknown: 'Desconocido', flag: '🇪🇸 ES', btn_out: 'SALIR' }
+            },
 
             applyLang: function() {
                 var t = this.i18n[this.cfg.lang] || this.i18n['pt'];
@@ -482,6 +487,12 @@
                 document.getElementById('dash-m0').innerText = t.dash_live; document.getElementById('dash-m1').innerText = t.dash_movie; document.getElementById('dash-m2').innerText = t.dash_series;
                 document.getElementById('lbl-exp-txt').innerText = t.lbl_exp; document.getElementById('lbl-conn-txt').innerText = t.lbl_conn;
                 document.getElementById('cat-title-txt').innerText = t.cat_title; document.getElementById('search').placeholder = t.search_ph;
+                
+                document.getElementById('key-fs').innerHTML = '<div class="dot" style="background-color:#FF0000; box-shadow: 0 0 10px #FF0000;"></div> ' + t.key_fs;
+                document.getElementById('key-top').innerHTML = '<div class="dot" style="background-color:#00C851; box-shadow: 0 0 10px #00C851;"></div> ' + t.key_top;
+                document.getElementById('key-search').innerHTML = '<div class="dot" style="background-color:#ffbb33; box-shadow: 0 0 10px #ffbb33;"></div> ' + t.key_search;
+                document.getElementById('key-menu').innerHTML = '<div class="dot" style="background-color:#33b5e5; box-shadow: 0 0 10px #33b5e5;"></div> ' + t.key_menu;
+
                 this.updateCfgUI();
             },
 
@@ -497,7 +508,9 @@
                 });
 
                 if(localStorage.getItem('rc_cfg_filter')) this.cfg.filter = (localStorage.getItem('rc_cfg_filter') === 'true');
-                var savedFmt = localStorage.getItem('rc_cfg_format'); this.cfg.format = (savedFmt === 'm3u8_native' || savedFmt === 'ts_native') ? savedFmt : 'ts_native'; this.cfg.lang = 'pt'; 
+                var savedFmt = localStorage.getItem('rc_cfg_format'); this.cfg.format = (savedFmt === 'm3u8_native' || savedFmt === 'ts_native') ? savedFmt : 'ts_native'; 
+                var savedLang = localStorage.getItem('rc_cfg_lang'); this.cfg.lang = savedLang ? savedLang : 'pt';
+                
                 this.applyLang(); PlayerEngine.init(); 
                 
                 this.updateClock();
@@ -511,8 +524,20 @@
 
             toggleCfg: function(type) { if(type === 'filter') { this.cfg.filter = !this.cfg.filter; localStorage.setItem('rc_cfg_filter', this.cfg.filter); } this.updateCfgUI(); },
             toggleFormat: function() { this.cfg.format = (this.cfg.format === 'ts_native') ? 'm3u8_native' : 'ts_native'; localStorage.setItem('rc_cfg_format', this.cfg.format); this.updateCfgUI(); },
-            toggleLang: function() { },
-            updateCfgUI: function() { var t = this.i18n[this.cfg.lang]; document.getElementById('lbl-filter').innerText = this.cfg.filter ? t.yes : t.no; document.getElementById('s2').style.borderColor = this.cfg.filter ? '#00C851' : '#333'; document.getElementById('lbl-filter').style.color = this.cfg.filter ? '#00C851' : '#888'; var fLbl = this.cfg.format === 'm3u8_native' ? "M3U8 NAT" : "TS NAT"; document.getElementById('lbl-format').innerText = fLbl; document.getElementById('s3').style.borderColor = (this.cfg.format !== 'ts_native') ? '#00C851' : '#333'; document.getElementById('lbl-format').style.color = (this.cfg.format !== 'ts_native') ? '#00C851' : '#888'; },
+            toggleLang: function() { 
+                var langs = ['pt', 'en', 'es'];
+                var curr = langs.indexOf(this.cfg.lang);
+                var next = (curr + 1) % langs.length;
+                this.cfg.lang = langs[next];
+                localStorage.setItem('rc_cfg_lang', this.cfg.lang);
+                this.applyLang();
+            },
+            updateCfgUI: function() { 
+                var t = this.i18n[this.cfg.lang]; 
+                document.getElementById('lbl-filter').innerText = this.cfg.filter ? t.yes : t.no; document.getElementById('s2').style.borderColor = this.cfg.filter ? '#00C851' : '#333'; document.getElementById('lbl-filter').style.color = this.cfg.filter ? '#00C851' : '#888'; 
+                var fLbl = this.cfg.format === 'm3u8_native' ? "M3U8 NAT" : "TS NAT"; document.getElementById('lbl-format').innerText = fLbl; document.getElementById('s3').style.borderColor = (this.cfg.format !== 'ts_native') ? '#00C851' : '#333'; document.getElementById('lbl-format').style.color = (this.cfg.format !== 'ts_native') ? '#00C851' : '#888'; 
+                document.getElementById('lbl-lang').innerText = t.flag; 
+            },
             
             updateClock: function() { 
                 var now = new Date(); var h = now.getHours(); var m = now.getMinutes(); if(m<10) m='0'+m; 
@@ -612,7 +637,7 @@
                 });
             },
             
-            resetInfo: function() { document.getElementById('meta-title').innerHTML = '<span style="color:#fff">IPTV</span>&nbsp;OSCORP'; document.getElementById('meta-desc').innerText = ""; PlayerEngine.hardStop(); document.getElementById('pause-layer').style.display = 'none'; },
+            resetInfo: function() { document.getElementById('meta-title').innerHTML = '<span style="color:#fff">IPTV</span>&nbsp;NETRANGE'; document.getElementById('meta-desc').innerText = ""; PlayerEngine.hardStop(); document.getElementById('pause-layer').style.display = 'none'; },
             
             catClick: function(i, isTrusted) { 
                 if (!isTrusted && new Date().getTime() - (this.lastScreenSwitch || 0) < 500) return;
@@ -622,11 +647,10 @@
             loadContent: function(catIdx, jumpFocus) {
                 if (catIdx === -1) return; 
 
-                // APENAS PARA O VÍDEO QUANDO TROCAR DE CATEGORIA
                 if (App.currentMode !== 'live') {
                     PlayerEngine.hardStop();
                     App.playingId = null;
-                    document.getElementById('meta-title').innerHTML = '<span style="color:#fff">IPTV</span>&nbsp;OSCORP';
+                    document.getElementById('meta-title').innerHTML = '<span style="color:#fff">IPTV</span>&nbsp;NETRANGE';
                     document.getElementById('meta-desc').innerText = "";
                 }
 
@@ -674,6 +698,7 @@
                 }
             },
 
+            // RENDERIZAÇÃO MELHORADA (SEM SALTOS DE ROLAGEM)
             renderList: function() {
                 var d = this.fullData; 
                 if(!d) d = [];
@@ -681,11 +706,7 @@
                 var countEl = document.getElementById('item-count'); if(countEl) countEl.innerText = t.tot_pre + max;
                 if(max===0) { listEl.innerHTML = '<div style="padding:20px; text-align:center;">'+t.empty+'</div>'; return; }
 
-                var currentListIdx = (this.zone === 2) ? this.idx : 0;
-                var currentPage = Math.floor(currentListIdx / this.pageSize); 
-                var start = currentPage * this.pageSize; 
-                var end = Math.min(start + this.pageSize, max);
-                
+                var end = Math.min(this.pageSize, max); // Inicia com o primeiro lote de dom gigante
                 var isGrid = (this.currentMode !== 'live' && !this.showingEpisodes);
                 var h = [];
 
@@ -693,7 +714,7 @@
                     h.push('<div class="vod-grid">');
                 }
 
-                for(var i = start; i < end; i++) {
+                for(var i = 0; i < end; i++) {
                     var n = d[i].name || d[i].title; var id = d[i].stream_id || d[i].series_id || d[i].id; var icn = FavManager.isFav(id) ? '<i class="fas fa-star fav-icon"></i>' : '';
                     var playingClass = (App.playingId == id) ? ' playing' : ''; 
                     
@@ -712,10 +733,9 @@
                 }
 
                 listEl.innerHTML = h.join(''); 
+                if (listEl) listEl.scrollTop = 0;
                 
-                if (currentPage === 0 && listEl) listEl.scrollTop = 0;
-                
-                this.mobileRenderedPages = currentPage + 1;
+                this.mobileRenderedPages = 1;
                 this.updateFocus();
             },
 
@@ -769,7 +789,7 @@
                 
                 PlayerEngine.hardStop();
                 App.playingId = null;
-                document.getElementById('meta-title').innerHTML = '<span style="color:#fff">IPTV</span>&nbsp;OSCORP';
+                document.getElementById('meta-title').innerHTML = '<span style="color:#fff">IPTV</span>&nbsp;NETRANGE';
                 document.getElementById('meta-desc').innerText = "";
 
                 App.seriesDataCache = App.fullData; 
@@ -843,7 +863,10 @@
                 for(var i=0; i<this.fullData.length; i++) { 
                     var id = this.fullData[i].stream_id || this.fullData[i].series_id || this.fullData[i].id; 
                     if(id == this.playingId) { 
-                        this.idx = i; this.renderList(); this.updateFocus(); return; 
+                        this.idx = i; 
+                        var pageNeeded = Math.floor(i / this.pageSize) + 1;
+                        while(this.mobileRenderedPages < pageNeeded) { this.loadMoreMobile(); }
+                        this.updateFocus(); return; 
                     } 
                 } 
             },
@@ -857,7 +880,7 @@
                 if (App.currentMode !== 'live') {
                     PlayerEngine.hardStop();
                     App.playingId = null;
-                    document.getElementById('meta-title').innerHTML = '<span style="color:#fff">IPTV</span>&nbsp;OSCORP';
+                    document.getElementById('meta-title').innerHTML = '<span style="color:#fff">IPTV</span>&nbsp;NETRANGE';
                 }
 
                 var rawT = document.getElementById('search').value; 
@@ -927,7 +950,6 @@
                 } 
             },
             
-            // CORREÇÃO AQUI: O vídeo agora NÃO vai mais parar ao sair da tela cheia!
             exitFull: function() { 
                 document.body.removeAttribute('data-fullscreen'); 
                 document.getElementById('vid-box').classList.remove('fs'); 
@@ -951,10 +973,8 @@
                         document.body.setAttribute('data-episodes', 'false');
                         document.getElementById('item-list').innerHTML = '';
                         App.renderList(); 
-                        App.updateFocus(); 
                         return; 
                     } 
-                    // Se estiver no grid VOD principal e apertar voltar, aí sim ele para o áudio
                     PlayerEngine.hardStop();
                     App.playingId = null;
                     this.zone=0; this.idx=(this.lastCatIdx > -1 ? this.lastCatIdx : 0); this.updateFocus(); return; 
@@ -990,55 +1010,56 @@
             move: function(d) {
                 var s = this.scr;
                 if(s===0) { if(d===1 && this.idx < 3) this.idx++; if(d===0 && this.idx > 0) this.idx--; }
-                else if(s===1) { if(this.idx === 0) { if(d===3) this.idx=1; else if(d===0) this.idx=3; } else if(this.idx === 1) { if(d===3) this.idx=2; else if(d===2) this.idx=0; else if(d===0) this.idx=3; } else if(this.idx === 2) { if(d===2) this.idx=1; else if(d===0) this.idx=3; } else if(this.idx === 3) { if(d===3) this.idx=4; else if(d===1) this.idx=0; } else if(this.idx === 4) { if(d===2) this.idx=3; else if(d===1) this.idx=2; } }
+                else if(s===1) { 
+                    // Novo Layout do Dashboard: m0(0), m1(1), m2(2), Logout(3)
+                    if(this.idx === 0) { if(d===3) this.idx=1; else if(d===0) this.idx=3; } 
+                    else if(this.idx === 1) { if(d===3) this.idx=2; else if(d===2) this.idx=0; else if(d===0) this.idx=3; } 
+                    else if(this.idx === 2) { if(d===2) this.idx=1; else if(d===0) this.idx=3; } 
+                    else if(this.idx === 3) { if(d===1) this.idx=0; } 
+                }
                 else if(s===3) { if(this.idx === 0) { if(d===1) this.idx = 1; } else if(this.idx === 1) { if(d===1) this.idx = 2; else if(d===0) this.idx = 0; } else if(this.idx === 2) { if(d===3) this.idx = 3; else if(d===1) this.idx = 4; else if(d===0) this.idx = 1; } else if(this.idx === 3) { if(d===2) this.idx = 2; else if(d===1) this.idx = 4; else if(d===0) this.idx = 1; } else if(this.idx === 4) { if(d===0) this.idx = 2; else if(d===3) this.idx = 5; } else if(this.idx === 5) { if(d===2) this.idx = 4; else if(d===0) this.idx = 3; } }
                 else if(s===2) {
                     if(this.zone===3) { if(d===2) { this.zone=2; this.syncFocusToPlaying(); this.updateFocus(); } return; }
-                    if(this.zone===0) { var max = document.getElementById('cat-list').children.length-1; if(d===1 && this.idx<max) this.idx++; if(d===0 && this.idx>0) this.idx--; if(d===3 && App.fullData.length>0) { this.zone=2; this.idx=0; App.renderList(); } }
+                    if(this.zone===0) { var max = document.getElementById('cat-list').children.length-1; if(d===1 && this.idx<max) this.idx++; if(d===0 && this.idx>0) this.idx--; if(d===3 && App.fullData.length>0) { this.zone=2; this.idx=0; } }
                     else if(this.zone===2) { 
                         var dataLen = App.fullData.length;
                         var isGrid = (App.currentMode !== 'live' && !App.showingEpisodes);
                         var cols = isGrid ? 5 : 1;
 
-                        if(d===1) { 
+                        if(d===1) { // Para Baixo
                             if(typeof this.idx === 'number') {
-                                var oldPage = Math.floor(this.idx / this.pageSize);
                                 if(this.idx + cols < dataLen) {
                                     this.idx += cols; 
                                 } else {
                                     if (this.idx < dataLen - 1) this.idx = dataLen - 1; 
                                 }
-                                var newPage = Math.floor(this.idx / this.pageSize);
-                                if (oldPage !== newPage) this.renderList(); 
+                                // Auto load quando chega no fim da lista renderizada (SEM RENDERIZAR DE NOVO = SEM PULO)
+                                if (this.idx >= (this.mobileRenderedPages * this.pageSize) - (cols * 3)) {
+                                    this.loadMoreMobile();
+                                }
                             }
                         }
-                        else if(d===0) { 
+                        else if(d===0) { // Para Cima
                             if(typeof this.idx === 'number' && this.idx >= cols) { 
-                                var oldPage = Math.floor(this.idx / this.pageSize);
                                 this.idx -= cols; 
-                                var newPage = Math.floor(this.idx / this.pageSize);
-                                if (oldPage !== newPage) this.renderList(); 
                             } else if(this.idx < cols) { 
                                 this.zone = 1; 
                             } 
                         } 
-                        else if(d===2) { 
+                        else if(d===2) { // Esquerda
                             if (cols > 1 && this.idx % cols !== 0 && this.idx > 0) {
-                                var oldPage = Math.floor(this.idx / this.pageSize);
                                 this.idx--; 
-                                var newPage = Math.floor(this.idx / this.pageSize);
-                                if (oldPage !== newPage) this.renderList(); 
                             } else {
                                 this.zone=0; 
                                 this.idx=(this.lastCatIdx > -1 ? this.lastCatIdx : 0);
                             }
                         } 
-                        else if(d===3) { 
+                        else if(d===3) { // Direita
                             if (cols > 1 && (this.idx + 1) % cols !== 0 && this.idx < dataLen - 1) {
-                                var oldPage = Math.floor(this.idx / this.pageSize);
                                 this.idx++; 
-                                var newPage = Math.floor(this.idx / this.pageSize);
-                                if (oldPage !== newPage) this.renderList(); 
+                                if (this.idx >= (this.mobileRenderedPages * this.pageSize) - 2) {
+                                    this.loadMoreMobile();
+                                }
                             } else if (cols === 1) {
                                 this.zone=3; 
                             }
@@ -1052,7 +1073,12 @@
                 var now = new Date().getTime(); if(now - this.lastEnter < 400) return; this.lastEnter = now;
                 var currentScr = this.scr; 
                 if(currentScr===0) { if(this.idx === 3) this.login(false); else if(this.idx < 3) this.move(1); }
-                else if(currentScr===1) { if(this.idx === 4) this.logout(); else if(this.idx === 3) this.openSettings(); else if(this.idx === 0) this.openMode('live', true); else if(this.idx === 1) this.openMode('movie', true); else if(this.idx === 2) this.openMode('series', true); }
+                else if(currentScr===1) { 
+                    if(this.idx === 3) this.logout(); 
+                    else if(this.idx === 0) this.openMode('live', true); 
+                    else if(this.idx === 1) this.openMode('movie', true); 
+                    else if(this.idx === 2) this.openMode('series', true); 
+                }
                 else if(currentScr===3) { if(this.idx === 1) this.toggleLang(); else if(this.idx === 2) this.toggleCfg('filter'); else if(this.idx === 3) this.toggleFormat(); else if(this.idx === 4) this.closeSettings(); else if(this.idx === 5) this.logout(); }
                 else if(currentScr===2) { if(this.zone===0) this.catClick(this.idx, true); else if(this.zone===1) this.doSearch(true); else if(this.zone===2) { this.clickItem(); } else if(this.zone===3) this.toggleFull(); }
             }
