@@ -230,7 +230,7 @@
 
     <div id="login-layer" class="layer flex-center hide">
         <div class="login-box">
-            <div class="logo-txt"><span style="color:#fff">R&C </span><span class="theme-text">PHILCO MAX</span></div>
+            <div class="logo-txt"><span style="color:#fff">R&C PHILCO</span>&nbsp;<span class="theme-text">MAX</span></div>
             <input type="text" id="i0" class="inp focusable" placeholder="URL DNS" autocomplete="off">
             <input type="text" id="i1" class="inp focusable" placeholder="USUÁRIO" autocomplete="off">
             <input type="password" id="i2" class="inp focusable" placeholder="SENHA" autocomplete="off">
@@ -263,7 +263,7 @@
 
     <div id="dash-layer" class="layer hide">
         <div class="top-bar">
-            <div class="dash-logo"><span style="color:#fff">R&C </span><span class="theme-text">PHILCO MAX</span></div>
+            <div class="dash-logo"><span style="color:#fff">R&C PHILCO</span>&nbsp;<span class="theme-text">MAX</span></div>
             <div class="dash-clock"><div id="clock-time" class="clock-time">--:--</div><div id="clock-date" class="clock-date">--/--/----</div></div>
             <div class="top-actions">
                 <div id="m3" class="power-btn focusable" onclick="App.logout()"><i class="fas fa-power-off"></i></div>
@@ -311,7 +311,7 @@
             </div>
             
             <div class="meta">
-                <div id="meta-title" class="meta-title"><span style="color:#fff">R&C </span>PHILCO MAX</div>
+                <div id="meta-title" class="meta-title"><span style="color:#fff">R&C PHILCO</span>&nbsp;MAX</div>
                 <div id="meta-desc" class="meta-desc"></div>
                 
                 <div class="keys">
@@ -756,7 +756,7 @@
                 });
             },
             
-            resetInfo: function() { document.getElementById('meta-title').innerHTML = '<span style="color:#fff">R&C </span>&nbsp;PHILCO MAX'; document.getElementById('meta-desc').innerText = ""; PlayerEngine.hardStop(); document.getElementById('pause-layer').style.display = 'none'; },
+            resetInfo: function() { document.getElementById('meta-title').innerHTML = '<span style="color:#fff">R&C PHILCO</span>&nbsp;MAX'; document.getElementById('meta-desc').innerText = ""; PlayerEngine.hardStop(); document.getElementById('pause-layer').style.display = 'none'; },
             
             catClick: function(i, isTrusted) { 
                 if (!isTrusted && new Date().getTime() - (this.lastScreenSwitch || 0) < 500) return;
@@ -769,7 +769,7 @@
                 if (App.currentMode !== 'live') {
                     PlayerEngine.hardStop();
                     App.playingId = null;
-                    document.getElementById('meta-title').innerHTML = '<span style="color:#fff">R&C </span>&nbsp;PHILCO MAX';
+                    document.getElementById('meta-title').innerHTML = '<span style="color:#fff">R&C PHILCO</span>&nbsp;MAX';
                     document.getElementById('meta-desc').innerText = "";
                 }
 
@@ -924,7 +924,7 @@
                 
                 PlayerEngine.hardStop();
                 App.playingId = null;
-                document.getElementById('meta-title').innerHTML = '<span style="color:#fff">R&C </span>&nbsp;PHILCO MAX';
+                document.getElementById('meta-title').innerHTML = '<span style="color:#fff">R&C PHILCO</span>&nbsp;MAX';
                 document.getElementById('meta-desc').innerText = "";
 
                 App.seriesDataCache = App.fullData; 
@@ -1032,7 +1032,7 @@
                 if (App.currentMode !== 'live') {
                     PlayerEngine.hardStop();
                     App.playingId = null;
-                    document.getElementById('meta-title').innerHTML = '<span style="color:#fff">R&C </span>&nbsp;PHILCO MAX';
+                    document.getElementById('meta-title').innerHTML = '<span style="color:#fff">R&C PHILCO</span>&nbsp;MAX';
                 }
 
                 var t = App.i18n[App.cfg.lang];
@@ -1123,7 +1123,7 @@
                 if (App.currentMode === 'movie') {
                     PlayerEngine.hardStop();
                     App.playingId = null;
-                    document.getElementById('meta-title').innerHTML = '<span style="color:#fff">R&C </span>&nbsp;PHILCO MAX';
+                    document.getElementById('meta-title').innerHTML = '<span style="color:#fff">R&C PHILCO</span>&nbsp;MAX';
                     document.getElementById('meta-desc').innerText = "";
                     this.zone = 2;
                     this.updateFocus();
