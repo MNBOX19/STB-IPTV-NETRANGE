@@ -8,7 +8,7 @@
     <meta name="theme-color" content="#000000">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     
-    <title>IPTV OSCORP</title>
+    <title>R&C PHILCO MAX</title>
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&display=swap" rel="stylesheet">
@@ -230,7 +230,7 @@
 
     <div id="login-layer" class="layer flex-center hide">
         <div class="login-box">
-            <div class="logo-txt"><span style="color:#fff">IPTV</span>&nbsp;<span class="theme-text">OSCORP</span></div>
+            <div class="logo-txt"><span style="color:#fff">R&C PHILCO</span>&nbsp;<span class="theme-text">MAX</span></div>
             <input type="text" id="i0" class="inp focusable" placeholder="URL DNS" autocomplete="off">
             <input type="text" id="i1" class="inp focusable" placeholder="USUÁRIO" autocomplete="off">
             <input type="password" id="i2" class="inp focusable" placeholder="SENHA" autocomplete="off">
@@ -263,11 +263,10 @@
 
     <div id="dash-layer" class="layer hide">
         <div class="top-bar">
-            <div class="dash-logo"><span style="color:#fff">IPTV</span>&nbsp;<span class="theme-text">OSCORP</span></div>
+            <div class="dash-logo"><span style="color:#fff">R&C PHILCO</span>&nbsp;<span class="theme-text">MAX</span></div>
             <div class="dash-clock"><div id="clock-time" class="clock-time">--:--</div><div id="clock-date" class="clock-date">--/--/----</div></div>
             <div class="top-actions">
-                <div id="m3" class="power-btn focusable" onclick="App.openSettings()"><i class="fas fa-cog"></i></div>
-                <div id="m4" class="power-btn focusable" onclick="App.logout()"><i class="fas fa-power-off"></i></div>
+                <div id="m3" class="power-btn focusable" onclick="App.logout()"><i class="fas fa-power-off"></i></div>
             </div>
         </div>
         <div class="dash-grid">
@@ -312,7 +311,7 @@
             </div>
             
             <div class="meta">
-                <div id="meta-title" class="meta-title"><span style="color:#fff">IPTV</span>&nbsp;OSCORP</div>
+                <div id="meta-title" class="meta-title"><span style="color:#fff">R&C PHILCO</span>&nbsp;MAX</div>
                 <div id="meta-desc" class="meta-desc"></div>
                 
                 <div class="keys">
@@ -379,7 +378,7 @@
             db: null,
             init: function(cb) {
                 try {
-                    var req = indexedDB.open("OSCORP_DB", 1);
+                    var req = indexedDB.open("PHILCO_MAX_DB", 1);
                     req.onupgradeneeded = function(e) {
                         var db = e.target.result;
                         if(!db.objectStoreNames.contains("reqCache")) {
@@ -407,6 +406,17 @@
                     var store = tx.objectStore("reqCache");
                     store.put({key: key, data: data, time: time});
                 } catch(e) {}
+            },
+            // NOVA FUNÇÃO: Limpa o banco de dados inteiro
+            clear: function(cb) {
+                if(!this.db) { if(cb) cb(); return; }
+                try {
+                    var tx = this.db.transaction(["reqCache"], "readwrite");
+                    var store = tx.objectStore("reqCache");
+                    var req = store.clear();
+                    req.onsuccess = function() { if(cb) cb(); };
+                    req.onerror = function() { if(cb) cb(); };
+                } catch(e) { if(cb) cb(); }
             }
         };
 
@@ -635,7 +645,10 @@
 
             fetchCache: function(url, cacheName, cb) {
                 var now = new Date().getTime();
-                var cacheKey = cacheName;
+                
+                // CRUCIAL: Adiciona o nome do usuário na chave do cache. 
+                // Exemplo: 'glob_live_joao123' ao invés de apenas 'glob_live'
+                var cacheKey = cacheName + '_' + (App.creds.u || 'guest');
                 
                 // 1. Tenta RAM Primeiro
                 if (App.ramCache[cacheKey] && (now - App.ramCache[cacheKey].time) < 86400000) {
@@ -681,7 +694,16 @@
                     } else { App.setScr(0); document.getElementById('msg-login').innerText = App.i18n[App.cfg.lang].err_auth; localStorage.clear(); }
                 });
             },
-            logout: function() { PlayerEngine.hardStop(); localStorage.clear(); location.reload(); },
+            logout: function() { 
+                PlayerEngine.hardStop(); 
+                localStorage.clear(); 
+                App.ramCache = {}; // Limpa cache da RAM
+                
+                // Limpa o banco de dados da TV e só recarrega a página quando terminar
+                DBCache.clear(function() {
+                    location.reload(); 
+                });
+            },
 
             setScr: function(n) {
                 this.lastScreenSwitch = new Date().getTime(); if(n===1) { PlayerEngine.hardStop(); }
@@ -757,7 +779,7 @@
                 });
             },
             
-            resetInfo: function() { document.getElementById('meta-title').innerHTML = '<span style="color:#fff">IPTV</span>&nbsp;OSCORP'; document.getElementById('meta-desc').innerText = ""; PlayerEngine.hardStop(); document.getElementById('pause-layer').style.display = 'none'; },
+            resetInfo: function() { document.getElementById('meta-title').innerHTML = '<span style="color:#fff">R&C PHILCO</span>&nbsp;MAX'; document.getElementById('meta-desc').innerText = ""; PlayerEngine.hardStop(); document.getElementById('pause-layer').style.display = 'none'; },
             
             catClick: function(i, isTrusted) { 
                 if (!isTrusted && new Date().getTime() - (this.lastScreenSwitch || 0) < 500) return;
@@ -770,7 +792,7 @@
                 if (App.currentMode !== 'live') {
                     PlayerEngine.hardStop();
                     App.playingId = null;
-                    document.getElementById('meta-title').innerHTML = '<span style="color:#fff">IPTV</span>&nbsp;OSCORP';
+                    document.getElementById('meta-title').innerHTML = '<span style="color:#fff">R&C PHILCO</span>&nbsp;MAX';
                     document.getElementById('meta-desc').innerText = "";
                 }
 
@@ -925,7 +947,7 @@
                 
                 PlayerEngine.hardStop();
                 App.playingId = null;
-                document.getElementById('meta-title').innerHTML = '<span style="color:#fff">IPTV</span>&nbsp;OSCORP';
+                document.getElementById('meta-title').innerHTML = '<span style="color:#fff">R&C PHILCO</span>&nbsp;MAX';
                 document.getElementById('meta-desc').innerText = "";
 
                 App.seriesDataCache = App.fullData; 
@@ -1033,7 +1055,7 @@
                 if (App.currentMode !== 'live') {
                     PlayerEngine.hardStop();
                     App.playingId = null;
-                    document.getElementById('meta-title').innerHTML = '<span style="color:#fff">IPTV</span>&nbsp;OSCORP';
+                    document.getElementById('meta-title').innerHTML = '<span style="color:#fff">R&C PHILCO</span>&nbsp;MAX';
                 }
 
                 var t = App.i18n[App.cfg.lang];
@@ -1124,7 +1146,7 @@
                 if (App.currentMode === 'movie') {
                     PlayerEngine.hardStop();
                     App.playingId = null;
-                    document.getElementById('meta-title').innerHTML = '<span style="color:#fff">IPTV</span>&nbsp;OSCORP';
+                    document.getElementById('meta-title').innerHTML = '<span style="color:#fff">R&C PHILCO</span>&nbsp;MAX';
                     document.getElementById('meta-desc').innerText = "";
                     this.zone = 2;
                     this.updateFocus();
@@ -1149,8 +1171,10 @@
                         App.renderList(); 
                         return; 
                     } 
-                    PlayerEngine.hardStop();
-                    App.playingId = null;
+                    if (App.currentMode !== 'live') {
+                        PlayerEngine.hardStop();
+                        App.playingId = null;
+                    }
                     this.zone=0; this.idx=(this.lastCatIdx > -1 ? this.lastCatIdx : 0); this.updateFocus(); return; 
                 }
                 if(this.zone===1) { this.zone=2; this.idx=0; this.updateFocus(); return; }
@@ -1246,8 +1270,7 @@
                 var currentScr = this.scr; 
                 if(currentScr===0) { if(this.idx === 3) this.login(false); else if(this.idx < 3) this.move(1); }
                 else if(currentScr===1) { 
-                    if(this.idx === 4) this.logout(); 
-                    else if(this.idx === 3) this.openSettings(); 
+                    if(this.idx === 3) this.logout(); 
                     else if(this.idx === 0) this.openMode('live', true); 
                     else if(this.idx === 1) this.openMode('movie', true); 
                     else if(this.idx === 2) this.openMode('series', true); 
@@ -1309,7 +1332,7 @@
             if(isRed) if(App.scr===2) App.toggleFull(); 
             if(isGreen) if(App.scr===2) { App.zone=0; App.idx=0; App.updateFocus(); } 
             if(isYellow) if(App.scr===2) { App.zone=1; App.updateFocus(); } 
-            if(isBlue) { e.preventDefault(); if(App.scr===2 || App.scr===1) App.openSettings(); } 
+            if(isBlue) { e.preventDefault(); if(App.scr===2) App.openSettings(); } 
         });
 
         window.addEventListener('beforeunload', function() { PlayerEngine.hardStop(); });
