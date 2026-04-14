@@ -174,28 +174,26 @@
             display: flex;
             flex-wrap: wrap;
             align-content: flex-start;
-            justify-content: center; /* Mantém as capas centralizadas */
+            justify-content: center; 
             padding: 10px;
         }
         
         .mode-grid .item {
             display: flex; flex-direction: column; 
             border: none !important; padding: 0 !important; 
-            margin: 10px !important; /* Margem substitui o 'gap' das TVs novas */
-            width: 160px; /* Largura fixa impede o tijolo gigante */
+            margin: 10px !important; 
+            width: 160px; 
             height: 260px; 
             position: relative; border-radius: 8px;
             overflow: hidden; background: #111;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
         
-        /* Efeito Lazy Load */
+        /* Imagem carrega direta, sem efeitos mirabolantes que travam TVs antigas */
         .mode-grid .item img {
             width: 100%; height: 100%; object-fit: cover;
             position: absolute; top: 0; left: 0; z-index: 1;
-            opacity: 0; transition: opacity 0.4s ease-in;
         }
-        .mode-grid .item img.loaded { opacity: 1; }
         
         .mode-grid .item .item-title {
             position: absolute; bottom: 0; left: 0; width: 100%;
@@ -221,7 +219,6 @@
             box-shadow: 0 10px 25px rgba(0,0,0,0.8) !important;
         }
         
-        /* Expande o nome inteiro ao FOCAR */
         .mode-grid .item.focused .item-title {
             background: var(--main-color);
             color: #000;
@@ -474,7 +471,7 @@
         var App = {
             validCategories: null, scr: 0, zone: 0, idx: 0, lastCatIdx: -1, creds: {}, fullData: [], playingId: null,
             cfg: { filter: false, format: 'ts_native', lang: 'pt' }, userInfo: null, lastEnter: 0,
-            categoryDataCache: null, showingEpisodes: false, lastScreenSwitch: 0, imgObserver: null,
+            categoryDataCache: null, showingEpisodes: false, lastScreenSwitch: 0,
             seriesDataCache: null, lastSeriesIdx: 0, lastTap: 0, tapTimer: null, pageSize: 30, mobileRenderedPages: 1,
 
             pad: function(n) { return (n < 10) ? ("0" + n) : n; },
@@ -525,39 +522,6 @@
                         }
                         App.setScr(0);
                     }, 2000);
-                }
-            },
-            
-            initLazyLoad: function() {
-                if (window.IntersectionObserver) {
-                    if (this.imgObserver) this.imgObserver.disconnect();
-                    this.imgObserver = new IntersectionObserver(function(entries, observer) {
-                        for(var j=0; j<entries.length; j++) {
-                            var entry = entries[j];
-                            if (entry.isIntersecting) {
-                                var img = entry.target;
-                                if (img.dataset.src) {
-                                    img.src = img.dataset.src;
-                                    img.removeAttribute('data-src');
-                                    img.onload = function() { img.classList.add('loaded'); };
-                                }
-                                observer.unobserve(img);
-                            }
-                        }
-                    }, { root: document.getElementById('item-list'), rootMargin: '400px 0px' });
-                    
-                    var imgs = document.querySelectorAll('.lazy-img');
-                    for (var i = 0; i < imgs.length; i++) {
-                        App.imgObserver.observe(imgs[i]);
-                    }
-                } else {
-                    var imgsFallback = document.querySelectorAll('.lazy-img');
-                    for(var k = 0; k < imgsFallback.length; k++) { 
-                        if(imgsFallback[k].dataset.src) { 
-                            imgsFallback[k].src = imgsFallback[k].dataset.src; 
-                            imgsFallback[k].classList.add('loaded'); 
-                        } 
-                    }
                 }
             },
 
@@ -745,7 +709,6 @@
                 var start = 0; 
                 var end = Math.min(this.mobileRenderedPages * this.pageSize, max);
                 var isGrid = document.getElementById('content-layer').classList.contains('mode-grid');
-                var defImg = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
                 
                 var h = [];
                 for(var i = start; i < end; i++) {
@@ -757,7 +720,7 @@
                         var ratingHtml = '';
                         if (d[i].rating && parseFloat(d[i].rating) > 0) { ratingHtml = '<div class="item-rating">' + parseFloat(d[i].rating).toFixed(1) + '</div>'; }
                         h.push('<div class="item grid-item' + playingClass + '" role="button" tabindex="-1" id="row-'+i+'" onclick="App.itemClick('+i+', true)">'+
-                               '<img data-src="'+imgUrl+'" src="'+defImg+'" class="lazy-img" onerror="this.src=\'https://via.placeholder.com/200x300/111/444?text=SEM+CAPA\'">'+
+                               '<img src="'+imgUrl+'" loading="lazy" onerror="this.src=\'https://via.placeholder.com/200x300/111/444?text=SEM+CAPA\'">'+
                                '<div class="item-title">'+n+'</div>'+
                                ratingHtml + icn + 
                                '</div>');
@@ -766,7 +729,6 @@
                     }
                 }
                 listEl.innerHTML = h.join(''); 
-                this.initLazyLoad();
                 this.updateFocus();
             },
 
@@ -777,7 +739,6 @@
                 
                 var end = Math.min(start + this.pageSize, max);
                 var isGrid = document.getElementById('content-layer').classList.contains('mode-grid');
-                var defImg = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
                 var h = [];
                 for(var i = start; i < end; i++) {
                     var n = this.fullData[i].name || this.fullData[i].title;
@@ -790,7 +751,7 @@
                         var ratingHtml = '';
                         if (this.fullData[i].rating && parseFloat(this.fullData[i].rating) > 0) { ratingHtml = '<div class="item-rating">' + parseFloat(this.fullData[i].rating).toFixed(1) + '</div>'; }
                         h.push('<div class="item grid-item' + playingClass + '" role="button" tabindex="-1" id="row-'+i+'" onclick="App.itemClick('+i+', true)">'+
-                               '<img data-src="'+imgUrl+'" src="'+defImg+'" class="lazy-img" onerror="this.src=\'https://via.placeholder.com/200x300/111/444?text=SEM+CAPA\'">'+
+                               '<img src="'+imgUrl+'" loading="lazy" onerror="this.src=\'https://via.placeholder.com/200x300/111/444?text=SEM+CAPA\'">'+
                                '<div class="item-title">'+n+'</div>'+
                                ratingHtml + icn + 
                                '</div>');
@@ -800,7 +761,6 @@
                 }
                 document.getElementById('item-list').insertAdjacentHTML('beforeend', h.join(''));
                 this.mobileRenderedPages++;
-                this.initLazyLoad();
             },
 
             itemClick: function(i, isTrusted) { 
