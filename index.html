@@ -8,7 +8,7 @@
     <meta name="theme-color" content="#000000">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     
-    <title>IPTV OSCORP</title>
+    <title>SKY GOLD</title>
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&display=swap" rel="stylesheet">
@@ -16,7 +16,7 @@
     <style>
         :root {
             --bg-deep: #000000;
-            --main-color: #FFD700;
+            --main-color: #FFD700; /* Tom GOLD */
             --font-xs: 1.8vh; --font-sm: 2.2vh; --font-md: 3vh; --font-lg: 5vh;
         }
 
@@ -35,7 +35,29 @@
 
         .hide { display: none !important; }
         .flex-center { display: flex; align-items: center; justify-content: center; }
+        
+        /* Centralização Absoluta para os avisos da lista */
+        .full-center { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; width: 100%; text-align: center; }
+        .loader-icon { font-size: 8vh; color: var(--main-color); margin-bottom: 2.5vh; text-shadow: 0 0 15px rgba(255, 215, 0, 0.3); }
+        .loader-text { font-size: 2.5vh; font-weight: 800; color: #888; letter-spacing: 2px; }
+        
         .layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; background: transparent; overflow: hidden; }
+
+        /* --- SPLASH SCREEN --- */
+        #splash-screen {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: #000; z-index: 999999; display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            transition: opacity 0.5s ease;
+        }
+        .splash-logo {
+            font-size: 10vh; font-weight: 900;
+            animation: pulseLogo 2s infinite ease-in-out, popIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        .splash-spinner { margin-top: 4vh; font-size: 6vh; color: var(--main-color); }
+        
+        @keyframes popIn { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        @keyframes pulseLogo { 0%, 100% { transform: scale(1); text-shadow: 0 0 0 rgba(255, 215, 0, 0); } 50% { transform: scale(1.05); text-shadow: 0 0 25px rgba(255, 215, 0, 0.6); } }
 
         #orientation-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -95,13 +117,14 @@
         .val { font-size: var(--font-md); color: var(--main-color); font-weight: 900; }
 
         #content-layer { display: flex; width: 100%; height: 100%; background: #000; overflow: hidden; }
-        .col-cat { width: 25%; background: #08080a; display: flex; flex-direction: column; border-right: 2px solid #1a1a1a; height: 100%; overflow: hidden; }
-        .col-list { width: 35%; background: #101014; display: flex; flex-direction: column; border-right: 2px solid #1a1a1a; height: 100%; overflow: hidden; }
+        .col-cat { width: 25%; background: #08080a; display: flex; flex-direction: column; border-right: 2px solid #1a1a1a; height: 100%; overflow: hidden; z-index: 2; }
+        .col-list { width: 35%; background: #101014; display: flex; flex-direction: column; border-right: 2px solid #1a1a1a; height: 100%; overflow: hidden; z-index: 1; }
         .col-play { flex: 1; display: flex; flex-direction: column; position: relative; background: #000; height: 100%; overflow: hidden; }
 
-        .cat-head { padding: 15px; background: #15151a; color: var(--main-color); border-bottom: 2px solid #222; text-align: center; flex-shrink: 0; }
+        .cat-head { padding: 15px; background: #15151a; color: var(--main-color); border-bottom: 2px solid #222; text-align: center; font-size: var(--font-md); font-weight: 900; flex-shrink: 0; }
+        .cat-top-row { display: flex; align-items: center; width: 100%; }
         
-        .cat-list, .item-list { flex: 1; height: 100%; overflow-y: auto; -webkit-overflow-scrolling: touch; will-change: transform; transform: translateZ(0); touch-action: pan-y; }
+        .cat-list, .item-list { flex: 1; height: 100%; overflow-y: auto; -webkit-overflow-scrolling: touch; will-change: transform; transform: translateZ(0); touch-action: pan-y; position: relative; }
         
         .cat-item, .item { padding: 14px 20px; border-radius: 6px; margin: 6px 12px; color: #888; font-size: var(--font-sm); font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; border: 1px solid transparent; }
         .cat-item.active { background: #1a1a1a; color: #fff; border-left: 4px solid var(--main-color); }
@@ -133,28 +156,101 @@
         .key { flex: 1; font-size: var(--font-xs); color: #fff; font-weight: 700; background: #1a1a1a; border: 1px solid #333; padding: 1.2vh 0.5vw; border-radius: 0.8vh; display: flex; align-items: center; justify-content: center; white-space: nowrap; }
         .dot { width: 1.2vh; height: 1.2vh; border-radius: 50%; flex-shrink: 0; margin-right: 1.2vw; }
 
-        #loader { background: #000; z-index: 20000; flex-direction: column; color: var(--main-color); font-weight: 900; font-size: var(--font-lg); }
         #pause-layer { display: none; position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5); z-index: 9000; align-items: center; justify-content: center; pointer-events: none; }
         
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-thumb { background: #444; border-radius: 10px; }
+
+        /* ============================================================
+           MODO GRADE (VOD/SÉRIES)
+           ============================================================ */
+        .mode-grid .col-play { width: 0; flex: none; border: none; overflow: visible; }
+        .mode-grid .meta { display: none; }
+        .mode-grid #vid-box:not(.fs) { display: none; }
+        .mode-grid .col-list { flex: 1; border-right: none; width: 75%; }
+        
+        .mode-grid .item-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            align-content: start;
+        }
+        
+        /* Protege a centralização (full-center) para não bugar no modo grade */
+        .mode-grid .item-list:has(.full-center) {
+            display: flex !important;
+            padding: 0 !important;
+        }
+        
+        .mode-grid .item {
+            display: flex; flex-direction: column; border: none !important;
+            padding: 0 !important; margin: 0 !important;
+            height: 260px; position: relative; border-radius: 8px;
+            overflow: hidden; background: #111;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        /* Efeito Lazy Load */
+        .mode-grid .item img {
+            width: 100%; height: 100%; object-fit: cover;
+            position: absolute; top: 0; left: 0; z-index: 1;
+            opacity: 0; transition: opacity 0.4s ease-in;
+        }
+        .mode-grid .item img.loaded { opacity: 1; }
+        
+        .mode-grid .item .item-title {
+            position: absolute; bottom: 0; left: 0; width: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.8) 50%, transparent 100%);
+            padding: 25px 10px 10px 10px; font-size: 1.6vh; color: #fff; text-align: center;
+            white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+            overflow: hidden; text-overflow: ellipsis; z-index: 2; font-weight: bold; line-height: 1.2;
+        }
+
+        .mode-grid .item .item-rating {
+            position: absolute; top: 8px; right: 8px; background: #28a745; color: #fff;
+            padding: 3px 8px; border-radius: 4px; font-size: 1.4vh; font-weight: bold;
+            z-index: 4; box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        }
+        
+        .mode-grid .item .fav-icon {
+            position: absolute; top: 8px; left: 8px; z-index: 4; font-size: 2.5vh; text-shadow: 0 0 10px #000;
+        }
+
+        .mode-grid .item.focused {
+            border: 4px solid var(--main-color) !important;
+            transform: scale(1.08) !important; z-index: 10;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.8) !important;
+        }
+        
+        /* Expande o nome inteiro ao FOCAR */
+        .mode-grid .item.focused .item-title {
+            background: var(--main-color);
+            color: #000;
+            -webkit-line-clamp: unset; 
+            padding-top: 15px; text-shadow: none;
+        }
+
+        .mode-grid .item.playing {
+            border: 2px solid #555 !important; opacity: 0.8;
+        }
     </style>
 </head>
 <body onload="App.init()">
+
+    <div id="splash-screen" style="display: none;">
+        <div class="splash-logo"><span style="color:#fff">SKY</span> <span class="theme-text">GOLD</span></div>
+        <i class="fas fa-circle-notch fa-spin splash-spinner"></i>
+    </div>
 
     <div id="orientation-overlay">
         <i class="fas fa-mobile-alt phone-icon"></i>
         <div>POR FAVOR<br><span style="color: var(--main-color);">GIRE A TELA</span></div>
     </div>
 
-    <div id="loader" class="hide flex-center">
-        <i class="fas fa-circle-notch fa-spin" style="margin-bottom:20px; font-size: 8vh;"></i>
-        <div id="load-txt">CARREGANDO SISTEMA...</div>
-    </div>
-
     <div id="login-layer" class="layer flex-center hide">
         <div class="login-box">
-            <div class="logo-txt"><span style="color:#fff">IPTV</span>&nbsp;<span class="theme-text">OSCORP</span></div>
+            <div class="logo-txt"><span style="color:#fff">SKY</span>&nbsp;<span class="theme-text">GOLD</span></div>
             <input type="text" id="i0" class="inp focusable" placeholder="URL DNS" autocomplete="off">
             <input type="text" id="i1" class="inp focusable" placeholder="USUÁRIO" autocomplete="off">
             <input type="password" id="i2" class="inp focusable" placeholder="SENHA" autocomplete="off">
@@ -184,7 +280,7 @@
 
     <div id="dash-layer" class="layer hide">
         <div class="top-bar">
-            <div class="dash-logo"><span style="color:#fff">IPTV</span>&nbsp;<span class="theme-text">OSCORP</span></div>
+            <div class="dash-logo"><span style="color:#fff">SKY</span>&nbsp;<span class="theme-text">GOLD</span></div>
             <div class="dash-clock"><div id="clock-time" class="clock-time">--:--</div><div id="clock-date" class="clock-date">--/--/----</div></div>
             <div class="top-actions">
                 <div id="m3" class="power-btn focusable" onclick="App.logout()"><i class="fas fa-power-off"></i></div>
@@ -204,14 +300,16 @@
     <div id="content-layer" class="layer hide">
         <div class="col-cat">
             <div class="cat-head">
-                <div id="cat-title-txt" style="font-size: var(--font-md); font-weight: 900;">MENU</div>
+                <div class="cat-top-row">
+                    <div id="cat-title-txt" style="flex:1;">MENU</div>
+                </div>
                 <div id="item-count" style="font-size: 0.7em; margin-top: 5px; opacity: 0.7;">TOTAL: ...</div>
             </div>
             <div id="cat-list" class="cat-list"></div>
         </div>
         
         <div class="col-list">
-            <div class="search-area"><input type="text" id="search" class="inp-search focusable" placeholder="BUSCAR..." autocomplete="off"></div>
+            <div class="search-area"><input type="text" id="search" class="inp-search focusable" placeholder="DIGITE AQUI E APERTE ENTER..." autocomplete="off"></div>
             <div id="item-list" class="item-list"></div>
         </div>
         
@@ -229,7 +327,7 @@
             </div>
             
             <div class="meta">
-                <div id="meta-title" class="meta-title"><span style="color:#fff">IPTV</span>&nbsp;OSCORP</div>
+                <div id="meta-title" class="meta-title"><span style="color:#fff">SKY</span>&nbsp;GOLD</div>
                 <div id="meta-desc" class="meta-desc"></div>
                 
                 <div class="keys">
@@ -287,6 +385,9 @@
                         if (nextIdx < App.fullData.length) { setTimeout(function() { App.itemClick(nextIdx, true); }, 50); return; }
                     }
                     PlayerEngine.handleError(false); 
+                    if (App.currentMode !== 'live' && document.getElementById('vid-box').classList.contains('fs')) {
+                        App.exitFull(); 
+                    }
                 };
 
                 this.video.addEventListener('playing', function() { PlayerEngine.onPlaySuccess(); });
@@ -375,13 +476,13 @@
         var App = {
             validCategories: null, scr: 0, zone: 0, idx: 0, lastCatIdx: -1, creds: {}, fullData: [], playingId: null,
             cfg: { filter: false, format: 'ts_native', lang: 'pt' }, userInfo: null, lastEnter: 0,
-            categoryDataCache: null, showingEpisodes: false, lastScreenSwitch: 0,
-            seriesDataCache: null, lastSeriesIdx: 0, lastTap: 0, tapTimer: null,
+            categoryDataCache: null, showingEpisodes: false, lastScreenSwitch: 0, imgObserver: null,
+            seriesDataCache: null, lastSeriesIdx: 0, lastTap: 0, tapTimer: null, pageSize: 30, mobileRenderedPages: 1,
 
             pad: function(n) { return (n < 10) ? ("0" + n) : n; },
             smartSort: function(a, b) { var nameA = (a.name || a.title || "").toLowerCase(); var nameB = (b.name || b.title || "").toLowerCase(); try { return nameA.localeCompare(nameB, undefined, { numeric: true, sensitivity: 'base' }); } catch (e) { return nameA < nameB ? -1 : 1; } },
 
-            i18n: { 'pt': { ph_dns: 'URL DNS', ph_user: 'USUÁRIO', ph_pass: 'SENHA', btn_login: 'CONECTAR', load_init: 'INICIANDO...', load_auth: 'AUTENTICANDO...', load_net: 'REDE...', err_net: 'Falha Conexão', err_auth: 'Login Inválido', set_title: 'MINHA CONTA', set_u: 'USUÁRIO:', set_e: 'VENCE:', set_c: 'TELAS:', set_d: 'CRIADO:', set_opt: 'OPÇÕES', set_filter: 'XXX:', set_format: 'FMT:', set_back: 'VOLTAR', yes: 'SIM', no: 'NÃO', fmt_def: 'PADRÃO', dash_live: 'TV AO VIVO', dash_movie: 'FILMES', dash_series: 'SÉRIES', lbl_exp: 'VENCIMENTO', lbl_conn: 'TELAS', cat_title: 'MENU', cat_fav: '⭐ FAVORITOS', search_ph: 'BUSCAR...', empty: 'Vazio', loading: 'CARREGANDO...', loading_ep: 'EPISÓDIOS...', no_ep: 'Sem episódios.', osd_play: '▶ TOCA', osd_pause: '⏸ PAUSA', osd_lost: 'SEM SINAL', key_fs: 'TELA CHEIA (R)', key_top: 'TOPO (G)', key_search: 'BUSCA (Y)', key_menu: 'MENU (B)', tot_chan: 'CANAIS', tot_mov: 'FILMES', tot_ser: 'SÉRIES', tot_pre: 'TOTAL: ', def_movie: 'Filme', def_ep: 'Episódio', unlimited: 'Ilimitado', unknown: 'Desconhecido', btn_out: 'SAIR / DESLOGAR' } },
+            i18n: { 'pt': { ph_dns: 'URL DNS', ph_user: 'USUÁRIO', ph_pass: 'SENHA', btn_login: 'CONECTAR', load_init: 'INICIANDO...', load_auth: 'AUTENTICANDO...', load_net: 'REDE...', err_net: 'Falha Conexão', err_auth: 'Login Inválido', set_title: 'MINHA CONTA', set_u: 'USUÁRIO:', set_e: 'VENCE:', set_c: 'TELAS:', set_d: 'CRIADO:', set_opt: 'OPÇÕES', set_filter: 'XXX:', set_format: 'FMT:', set_back: 'VOLTAR', yes: 'SIM', no: 'NÃO', fmt_def: 'PADRÃO', dash_live: 'TV AO VIVO', dash_movie: 'FILMES', dash_series: 'SÉRIES', lbl_exp: 'VENCIMENTO', lbl_conn: 'TELAS', cat_title: 'MENU', cat_fav: '⭐ FAVORITOS', search_ph: 'DIGITE E APERTE ENTER...', empty: 'Nenhum resultado encontrado.', loading: 'CARREGANDO...', loading_ep: 'EPISÓDIOS...', no_ep: 'Sem episódios.', osd_play: '▶ TOCA', osd_pause: '⏸ PAUSA', osd_lost: 'SEM SINAL', key_fs: 'TELA CHEIA (R)', key_top: 'TOPO (G)', key_search: 'BUSCA (Y)', key_menu: 'MENU (B)', tot_chan: 'CANAIS', tot_mov: 'FILMES', tot_ser: 'SÉRIES', tot_pre: 'TOTAL: ', def_movie: 'Filme', def_ep: 'Episódio', unlimited: 'Ilimitado', unknown: 'Desconhecido', flag: '🇧🇷 PT', btn_out: 'SAIR / DESLOGAR' } },
 
             applyLang: function() {
                 var t = this.i18n[this.cfg.lang] || this.i18n['pt'];
@@ -397,6 +498,13 @@
 
             init: function() {
                 FavManager.init(); 
+                
+                document.getElementById('item-list').addEventListener('scroll', function() { 
+                    var el = this; 
+                    if(el.scrollTop + el.clientHeight >= el.scrollHeight - 200) { 
+                        App.loadMoreMobile(); 
+                    } 
+                });
 
                 if(localStorage.getItem('rc_cfg_filter')) this.cfg.filter = (localStorage.getItem('rc_cfg_filter') === 'true');
                 var savedFmt = localStorage.getItem('rc_cfg_format'); this.cfg.format = (savedFmt === 'm3u8_native' || savedFmt === 'ts_native') ? savedFmt : 'ts_native'; this.cfg.lang = 'pt'; 
@@ -405,10 +513,46 @@
                 this.updateClock();
                 setInterval(function(){ App.updateClock(); }, 60000); 
 
+                var splash = document.getElementById('splash-screen');
+                if(splash) { splash.style.display = 'flex'; splash.style.opacity = '1'; }
+
                 if(localStorage.getItem('rc_h')) {
                     document.getElementById('i0').value = localStorage.getItem('rc_h'); document.getElementById('i1').value = localStorage.getItem('rc_u'); document.getElementById('i2').value = localStorage.getItem('rc_p');
-                    document.getElementById('loader').classList.remove('hide'); document.getElementById('load-txt').innerText = this.i18n[this.cfg.lang].load_init; App.login(true);
-                } else { this.setScr(0); }
+                    App.login(true);
+                } else {
+                    setTimeout(function() {
+                        if(splash) {
+                            splash.style.opacity = '0';
+                            setTimeout(function() { splash.style.display = 'none'; }, 500);
+                        }
+                        App.setScr(0);
+                    }, 2000);
+                }
+            },
+            
+            initLazyLoad: function() {
+                if (window.IntersectionObserver) {
+                    if (this.imgObserver) this.imgObserver.disconnect();
+                    this.imgObserver = new IntersectionObserver(function(entries, observer) {
+                        entries.forEach(function(entry) {
+                            if (entry.isIntersecting) {
+                                var img = entry.target;
+                                if (img.dataset.src) {
+                                    img.src = img.dataset.src;
+                                    img.removeAttribute('data-src');
+                                    img.onload = function() { img.classList.add('loaded'); };
+                                }
+                                observer.unobserve(img);
+                            }
+                        });
+                    }, { root: document.getElementById('item-list'), rootMargin: '400px 0px' });
+                    
+                    var imgs = document.querySelectorAll('.lazy-img');
+                    imgs.forEach(function(img) { App.imgObserver.observe(img); });
+                } else {
+                    var imgs = document.querySelectorAll('.lazy-img');
+                    imgs.forEach(function(img) { if(img.dataset.src) { img.src = img.dataset.src; img.classList.add('loaded'); } });
+                }
             },
 
             toggleCfg: function(type) { if(type === 'filter') { this.cfg.filter = !this.cfg.filter; localStorage.setItem('rc_cfg_filter', this.cfg.filter); } this.updateCfgUI(); },
@@ -425,7 +569,7 @@
 
             req: function(url, cb) { 
                 var x = new XMLHttpRequest(); var cacheBuster = (url.indexOf('?') > -1 ? '&' : '?') + '_t=' + new Date().getTime(); 
-                x.open("GET", url + cacheBuster, true); x.timeout = 20000; 
+                x.open("GET", url + cacheBuster, true); x.timeout = 25000; 
                 x.onload = function() { if(x.status===200) { try { var json = JSON.parse(x.responseText); cb(json); } catch(e) { cb(null); } } else { cb(null); } x = null; }; 
                 x.onerror = function() { cb('ERR_NET'); x = null; }; x.ontimeout = function() { cb('ERR_NET'); x = null; }; x.send(); 
             },
@@ -433,11 +577,25 @@
             login: function(isAuto) {
                 var h = document.getElementById('i0').value.trim(); var u = document.getElementById('i1').value.trim(); var p = document.getElementById('i2').value.trim();
                 if(h.endsWith('/')) h = h.slice(0, -1); if(h.indexOf('http') === -1) h = 'http://' + h;
-                if(!isAuto) { document.getElementById('loader').classList.remove('hide'); document.getElementById('load-txt').innerText = this.i18n[this.cfg.lang].load_auth; requestNativeFullscreen(document.documentElement); } 
+                
+                var splash = document.getElementById('splash-screen');
+                if(!isAuto && splash) { 
+                    splash.style.display = 'flex'; 
+                    setTimeout(function(){ splash.style.opacity = '1'; }, 10); 
+                    requestNativeFullscreen(document.documentElement); 
+                } 
+
                 this.req(h+"/player_api.php?username="+u+"&password="+p, function(d){
-                    document.getElementById('loader').classList.add('hide');
+                    if(splash) {
+                        splash.style.opacity = '0';
+                        setTimeout(function(){ splash.style.display = 'none'; }, 500);
+                    }
+
                     if(d === 'ERR_NET') { 
-                        if(isAuto) { document.getElementById('loader').classList.remove('hide'); document.getElementById('load-txt').innerText = App.i18n[App.cfg.lang].load_net; setTimeout(function(){ App.login(true); }, 5000); } 
+                        if(isAuto) { 
+                            if(splash) { splash.style.display = 'flex'; splash.style.opacity = '1'; }
+                            setTimeout(function(){ App.login(true); }, 5000); 
+                        } 
                         else { App.setScr(0); document.getElementById('msg-login').innerHTML = App.i18n[App.cfg.lang].err_net; } return; 
                     }
                     if(d && d.user_info && d.user_info.auth==1) {
@@ -461,7 +619,7 @@
             },
 
             openSettings: function() { this.setScr(3); this.idx = 0; this.updateFocus(); requestNativeFullscreen(); }, 
-            closeSettings: function() { if(this.currentMode) { App.openMode(this.currentMode, true); } else { this.setScr(1); this.idx=3; this.updateFocus(); } },
+            closeSettings: function() { if(this.currentMode) { App.openMode(this.currentMode, true); } else { this.setScr(1); this.idx=0; this.updateFocus(); } },
 
             countGlobal: function(mode) {
                 var actionStrm = mode === 'live' ? 'get_live_streams' : (mode === 'movie' ? 'get_vod_streams' : 'get_series');
@@ -484,8 +642,14 @@
                 
                 this.fullData = null; this.categoryDataCache = null; this.seriesDataCache = null;
                 this.fullData = []; this.showingEpisodes = false; this.lastCatIdx = -1;
+                this.mobileRenderedPages = 1;
                 
-                document.getElementById('cat-list').innerHTML = ''; document.getElementById('item-list').innerHTML = '<div style="padding:20px; text-align:center; color:#888; font-weight: bold; font-size: 2vh; margin-top: 20vh;">&larr; SELECIONE UMA CATEGORIA</div>';
+                var clLayer = document.getElementById('content-layer');
+                if (mode === 'movie' || mode === 'series') { clLayer.classList.add('mode-grid'); } 
+                else { clLayer.classList.remove('mode-grid'); }
+
+                document.getElementById('cat-list').innerHTML = ''; 
+                document.getElementById('item-list').innerHTML = '<div class="full-center"><i class="fas fa-arrow-left loader-icon" style="color:#333;"></i><div class="loader-text">SELECIONE UMA CATEGORIA</div></div>';
                 
                 mode = mode || 'live'; App.currentMode = mode; PlayerEngine.hardStop(); this.resetInfo(); requestNativeFullscreen();
                 this.playingId = null; this.validCategories = null; this.setScr(2);
@@ -509,7 +673,7 @@
                 });
             },
             
-            resetInfo: function() { document.getElementById('meta-title').innerHTML = '<span style="color:#fff">IPTV</span>&nbsp;OSCORP'; document.getElementById('meta-desc').innerText = ""; PlayerEngine.hardStop(); document.getElementById('pause-layer').style.display = 'none'; },
+            resetInfo: function() { document.getElementById('meta-title').innerHTML = '<span style="color:#fff">SKY</span>&nbsp;GOLD'; document.getElementById('meta-desc').innerText = ""; PlayerEngine.hardStop(); document.getElementById('pause-layer').style.display = 'none'; },
             
             catClick: function(i, isTrusted) { 
                 if (!isTrusted && new Date().getTime() - (this.lastScreenSwitch || 0) < 500) return;
@@ -520,7 +684,9 @@
                 if (catIdx === -1) return; App.showingEpisodes = false; document.getElementById('item-list').innerHTML = ''; this.lastCatIdx = catIdx; 
                 var el = document.getElementById('c'+catIdx); if(!el) return;
                 var cid = el.getAttribute('data-id'); var catItems = document.querySelectorAll('.cat-item'); for(var j=0; j<catItems.length; j++) { catItems[j].classList.remove('active'); } el.classList.add('active');
-                var t = App.i18n[App.cfg.lang]; document.getElementById('search').value = ''; document.getElementById('item-list').innerHTML = '<div style="padding:20px; text-align:center; color: var(--main-color); font-size: 30px;"><i class="fas fa-circle-notch fa-spin"></i></div>';
+                var t = App.i18n[App.cfg.lang]; document.getElementById('search').value = ''; 
+                
+                document.getElementById('item-list').innerHTML = '<div class="full-center"><i class="fas fa-circle-notch fa-spin loader-icon"></i><div class="loader-text">CARREGANDO...</div></div>';
                 var actionStrm = App.currentMode === 'live' ? 'get_live_streams' : (App.currentMode === 'movie' ? 'get_vod_streams' : 'get_series');
 
                 var onData = function(d) { 
@@ -534,9 +700,12 @@
                             App.fullData = res;
                         } else { App.fullData = d; }
                         App.categoryDataCache = App.fullData;
+                        App.mobileRenderedPages = 1;
                         if(jumpFocus && App.fullData.length > 0) { App.zone = 2; App.idx = 0; }
                         App.renderList(); 
-                    } else { document.getElementById('item-list').innerHTML = '<div style="padding:20px; text-align:center;">'+t.empty+'</div>'; }
+                    } else { 
+                        document.getElementById('item-list').innerHTML = '<div class="full-center"><i class="fas fa-box-open loader-icon" style="color:#555;"></i><div class="loader-text">'+t.empty+'</div></div>'; 
+                    }
                 };
 
                 if(cid === 'fav') { 
@@ -544,7 +713,7 @@
                         if(d && d!=='ERR_NET') { 
                             var favs = d.filter(function(x){ var fId = x.stream_id || x.series_id || x.id; return FavManager.isFav(fId); }); 
                             App.fullData = null; App.categoryDataCache = null;
-                            App.fullData = favs; App.categoryDataCache = favs; if(jumpFocus && favs.length > 0) { App.zone = 2; App.idx = 0; } App.renderList(); 
+                            App.fullData = favs; App.categoryDataCache = favs; App.mobileRenderedPages = 1; if(jumpFocus && favs.length > 0) { App.zone = 2; App.idx = 0; } App.renderList(); 
                         } 
                     }); 
                 } 
@@ -558,17 +727,74 @@
             renderList: function() {
                 var d = this.fullData; var max = d.length; var t = App.i18n[App.cfg.lang]; var listEl = document.getElementById('item-list'); 
                 var countEl = document.getElementById('item-count'); if(countEl) countEl.innerText = t.tot_pre + max;
-                if(max===0) { listEl.innerHTML = '<div style="padding:20px; text-align:center;">'+t.empty+'</div>'; return; }
+                if(max===0) { 
+                    listEl.innerHTML = '<div class="full-center"><i class="fas fa-box-open loader-icon" style="color:#555;"></i><div class="loader-text">'+t.empty+'</div></div>'; 
+                    return; 
+                }
 
+                var currentListIdx = (this.zone === 2) ? this.idx : 0;
+                var requiredPages = Math.floor(currentListIdx / this.pageSize) + 1;
+                if (requiredPages > this.mobileRenderedPages) { this.mobileRenderedPages = requiredPages; }
+
+                var start = 0; 
+                var end = Math.min(this.mobileRenderedPages * this.pageSize, max);
+                var isGrid = document.getElementById('content-layer').classList.contains('mode-grid');
+                var defImg = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
+                
                 var h = [];
-                for(var i = 0; i < max; i++) {
+                for(var i = start; i < end; i++) {
                     var n = d[i].name || d[i].title; var id = d[i].stream_id || d[i].series_id || d[i].id; var icn = FavManager.isFav(id) ? '<i class="fas fa-star fav-icon"></i>' : '';
                     var playingClass = (App.playingId == id) ? ' playing' : ''; 
-                    h.push('<div class="item' + playingClass + '" role="button" tabindex="-1" id="row-'+i+'" onclick="App.itemClick('+i+', true)">'+n+icn+'</div>');
+                    
+                    if (isGrid) {
+                        var imgUrl = d[i].stream_icon || d[i].cover || 'https://via.placeholder.com/200x300/111/444?text=SEM+CAPA';
+                        var ratingHtml = '';
+                        if (d[i].rating && parseFloat(d[i].rating) > 0) { ratingHtml = '<div class="item-rating">' + parseFloat(d[i].rating).toFixed(1) + '</div>'; }
+                        h.push('<div class="item grid-item' + playingClass + '" role="button" tabindex="-1" id="row-'+i+'" onclick="App.itemClick('+i+', true)">'+
+                               '<img data-src="'+imgUrl+'" src="'+defImg+'" class="lazy-img" onerror="this.src=\'https://via.placeholder.com/200x300/111/444?text=SEM+CAPA\'">'+
+                               '<div class="item-title">'+n+'</div>'+
+                               ratingHtml + icn + 
+                               '</div>');
+                    } else {
+                        h.push('<div class="item' + playingClass + '" role="button" tabindex="-1" id="row-'+i+'" onclick="App.itemClick('+i+', true)">'+n+icn+'</div>');
+                    }
                 }
                 listEl.innerHTML = h.join(''); 
-                
+                this.initLazyLoad();
                 this.updateFocus();
+            },
+
+            loadMoreMobile: function() {
+                var max = this.fullData.length;
+                var start = this.mobileRenderedPages * this.pageSize;
+                if(start >= max) return; 
+                
+                var end = Math.min(start + this.pageSize, max);
+                var isGrid = document.getElementById('content-layer').classList.contains('mode-grid');
+                var defImg = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
+                var h = [];
+                for(var i = start; i < end; i++) {
+                    var n = this.fullData[i].name || this.fullData[i].title;
+                    var id = this.fullData[i].stream_id || this.fullData[i].series_id || this.fullData[i].id;
+                    var icn = FavManager.isFav(id) ? '<i class="fas fa-star fav-icon"></i>' : '';
+                    var playingClass = (App.playingId == id) ? ' playing' : '';
+                    
+                    if (isGrid) {
+                        var imgUrl = this.fullData[i].stream_icon || this.fullData[i].cover || 'https://via.placeholder.com/200x300/111/444?text=SEM+CAPA';
+                        var ratingHtml = '';
+                        if (this.fullData[i].rating && parseFloat(this.fullData[i].rating) > 0) { ratingHtml = '<div class="item-rating">' + parseFloat(this.fullData[i].rating).toFixed(1) + '</div>'; }
+                        h.push('<div class="item grid-item' + playingClass + '" role="button" tabindex="-1" id="row-'+i+'" onclick="App.itemClick('+i+', true)">'+
+                               '<img data-src="'+imgUrl+'" src="'+defImg+'" class="lazy-img" onerror="this.src=\'https://via.placeholder.com/200x300/111/444?text=SEM+CAPA\'">'+
+                               '<div class="item-title">'+n+'</div>'+
+                               ratingHtml + icn + 
+                               '</div>');
+                    } else {
+                        h.push('<div class="item' + playingClass + '" role="button" tabindex="-1" id="row-'+i+'" onclick="App.itemClick('+i+', true)">'+n+icn+'</div>');
+                    }
+                }
+                document.getElementById('item-list').insertAdjacentHTML('beforeend', h.join(''));
+                this.mobileRenderedPages++;
+                this.initLazyLoad();
             },
 
             itemClick: function(i, isTrusted) { 
@@ -579,7 +805,11 @@
             clickItem: function(forcePlay) { var item = this.fullData[this.idx]; if(item) { if (App.currentMode === 'series' && item.series_id && !item.is_episode) { App.loadEpisodes(item.series_id); } else { this.playStream(item); } } },
 
             loadEpisodes: function(series_id) {
-                App.showingEpisodes = true; App.seriesDataCache = App.fullData; App.lastSeriesIdx = App.idx; var t = App.i18n[App.cfg.lang]; document.getElementById('item-list').innerHTML = '<div style="padding:20px; text-align:center; color: var(--main-color);"><i class="fas fa-circle-notch fa-spin"></i> '+t.loading_ep+'</div>';
+                App.showingEpisodes = true; 
+                document.getElementById('content-layer').classList.remove('mode-grid'); // Lista em vez de grade para os eps
+                App.seriesDataCache = App.fullData; App.lastSeriesIdx = App.idx; var t = App.i18n[App.cfg.lang]; 
+                
+                document.getElementById('item-list').innerHTML = '<div class="full-center"><i class="fas fa-circle-notch fa-spin loader-icon"></i><div class="loader-text">'+t.loading_ep+'</div></div>';
 
                 var processEps = function(d) {
                     if(d && d.episodes) {
@@ -599,8 +829,10 @@
                         eps.sort(function(a, b) { if (a.season_num !== b.season_num) { return a.season_num - b.season_num; } return a.episode_real_num - b.episode_real_num; });
                         
                         App.fullData = null; 
-                        App.fullData = eps; App.zone = 2; App.idx = 0; App.renderList(); 
-                    } else { document.getElementById('item-list').innerHTML = '<div style="padding:20px; text-align:center;">'+t.no_ep+'</div>'; }
+                        App.fullData = eps; App.zone = 2; App.idx = 0; App.mobileRenderedPages = 1; App.renderList(); 
+                    } else { 
+                        document.getElementById('item-list').innerHTML = '<div class="full-center"><i class="fas fa-video-slash loader-icon" style="color:#555;"></i><div class="loader-text">'+t.no_ep+'</div></div>'; 
+                    }
                 };
 
                 this.req(this.creds.h+"/player_api.php?username="+this.creds.u+"&password="+this.creds.p+"&action=get_series_info&series_id="+series_id, function(d) {
@@ -623,6 +855,13 @@
                 PlayerEngine.play(url); 
                 var items = document.querySelectorAll('.item'); for(var k=0; k<items.length; k++) { items[k].classList.remove('playing'); }
                 var r = document.getElementById('row-'+this.idx); if(r) r.classList.add('playing'); 
+
+                if (App.currentMode !== 'live') {
+                    setTimeout(function() {
+                        var b = document.getElementById('vid-box');
+                        if(!b.classList.contains('fs')) { App.toggleFull(); }
+                    }, 200);
+                }
             },
 
             seek: function(sec) { if(App.currentMode === 'live') return; var v = document.getElementById('player'); if(v && v.duration) { v.currentTime += sec; } }, 
@@ -640,7 +879,10 @@
                 for(var i=0; i<this.fullData.length; i++) { 
                     var id = this.fullData[i].stream_id || this.fullData[i].series_id || this.fullData[i].id; 
                     if(id == this.playingId) { 
-                        this.idx = i; this.renderList(); this.updateFocus(); return; 
+                        this.idx = i; 
+                        var requiredPages = Math.floor(this.idx / this.pageSize) + 1;
+                        if (requiredPages > this.mobileRenderedPages) { this.mobileRenderedPages = requiredPages; }
+                        this.renderList(); this.updateFocus(); return; 
                     } 
                 } 
             },
@@ -649,13 +891,20 @@
 
             doSearch: function(isGlobal) {
                 App.showingEpisodes = false; var rawT = document.getElementById('search').value; 
+                var listEl = document.getElementById('item-list');
+                
                 if(rawT.length === 0) { 
-                    if(App.lastCatIdx > -1) { App.loadContent(App.lastCatIdx); } else { document.getElementById('item-list').innerHTML = '<div style="padding:20px; text-align:center; color:#888; font-weight: bold; font-size: 2vh; margin-top: 20vh;">&larr; SELECIONE UMA CATEGORIA</div>'; App.fullData = []; } return; 
+                    if(App.lastCatIdx > -1) { App.loadContent(App.lastCatIdx); } 
+                    else { 
+                        listEl.innerHTML = '<div class="full-center"><i class="fas fa-arrow-left loader-icon" style="color:#333;"></i><div class="loader-text">SELECIONE UMA CATEGORIA</div></div>'; 
+                        App.fullData = []; App.renderList(); 
+                    } 
+                    return; 
                 }
-                if(rawT.length < 2) return; var tStr = App.removeAccents(rawT); var listEl = document.getElementById('item-list');
+                if(rawT.length < 2) return; var tStr = App.removeAccents(rawT); 
                 
                 if (isGlobal) {
-                    listEl.innerHTML = '<div style="padding:20px; text-align:center; color: var(--main-color); font-size: 2vh;"><i class="fas fa-circle-notch fa-spin" style="font-size: 5vh; margin-bottom: 15px;"></i><br><br>BUSCANDO...</div>';
+                    listEl.innerHTML = '<div class="full-center"><i class="fas fa-circle-notch fa-spin loader-icon"></i><div class="loader-text">BUSCANDO...</div></div>';
                     var actionStrm = App.currentMode === 'live' ? 'get_live_streams' : (App.currentMode === 'movie' ? 'get_vod_streams' : 'get_series');
                     App.req(App.creds.h+"/player_api.php?username="+App.creds.u+"&password="+App.creds.p+"&action="+actionStrm, function(d) { 
                         if(d && d !== 'ERR_NET') { 
@@ -666,17 +915,28 @@
                                 if(show && App.removeAccents(nome).indexOf(tStr) > -1) { res.push(d[i]); if(res.length >= maxResults) break; } 
                             }
                             d = null; 
-                            if (res.length > 0) { res.sort(App.smartSort); App.fullData = res; App.zone = 2; App.idx = 0; App.renderList(); } 
-                            else { listEl.innerHTML = '<div style="padding:20px; text-align:center;">Nenhum resultado encontrado no servidor global.</div>'; var countEl = document.getElementById('item-count'); if(countEl) countEl.innerText = App.i18n[App.cfg.lang].tot_pre + "0"; }
-                        } else { listEl.innerHTML = '<div style="padding:20px; text-align:center;">Erro na conexão com o servidor.</div>'; }
+                            if (res.length > 0) { res.sort(App.smartSort); App.fullData = res; App.zone = 2; App.idx = 0; App.mobileRenderedPages = 1; App.renderList(); } 
+                            else { 
+                                listEl.innerHTML = '<div class="full-center"><i class="fas fa-search loader-icon" style="color:#444;"></i><div class="loader-text">Nenhum resultado encontrado.</div></div>'; 
+                                var countEl = document.getElementById('item-count'); if(countEl) countEl.innerText = App.i18n[App.cfg.lang].tot_pre + "0"; 
+                            }
+                        } else { 
+                            listEl.innerHTML = '<div class="full-center"><i class="fas fa-exclamation-triangle loader-icon" style="color:#ff4444;"></i><div class="loader-text">Erro na conexão com o servidor.<br>Tente novamente mais tarde.</div></div>'; 
+                        }
                     });
                 } else {
-                    listEl.innerHTML = '<div style="padding:20px; text-align:center; color: var(--main-color); font-size: 30px;"><i class="fas fa-circle-notch fa-spin"></i></div>';
+                    listEl.innerHTML = '<div class="full-center"><i class="fas fa-circle-notch fa-spin loader-icon"></i><div class="loader-text">BUSCANDO...</div></div>';
                     setTimeout(function() {
                         var baseData = App.categoryDataCache || App.fullData;
-                        if (!baseData || baseData.length === 0) { listEl.innerHTML = '<div style="padding:20px; text-align:center;">'+App.i18n[App.cfg.lang].empty+'</div>'; return; }
+                        if (!baseData || baseData.length === 0) { 
+                            listEl.innerHTML = '<div class="full-center"><i class="fas fa-box-open loader-icon" style="color:#555;"></i><div class="loader-text">'+App.i18n[App.cfg.lang].empty+'</div></div>'; 
+                            return; 
+                        }
                         var res = []; for(var i=0; i<baseData.length; i++) { var nome = baseData[i].name || baseData[i].title || ""; if(App.removeAccents(nome).indexOf(tStr) > -1) { res.push(baseData[i]); } }
-                        if (res.length > 0) { App.fullData = res; App.renderList(); } else { listEl.innerHTML = '<div style="padding:20px; text-align:center; font-size:1.8vh; color:#888;">Não encontrado nesta categoria.<br><br><b style="color:var(--main-color);">APERTE ENTER PARA BUSCA GLOBAL</b></div>'; }
+                        if (res.length > 0) { App.fullData = res; App.mobileRenderedPages = 1; App.renderList(); } 
+                        else { 
+                            listEl.innerHTML = '<div class="full-center"><i class="fas fa-search loader-icon" style="color:#444;"></i><div class="loader-text">Não encontrado nesta categoria.<br><br><b style="color:var(--main-color);">APERTE ENTER PARA BUSCAR NO SERVIDOR TODO</b></div></div>'; 
+                        }
                     }, 50);
                 }
             },
@@ -698,14 +958,34 @@
             
             togglePlay: function() { if(App.currentMode === 'live') return; var v = document.getElementById('player'); var layer = document.getElementById('pause-layer'); if(!v) return; if(v.paused) { v.play(); layer.style.display = 'none'; } else { v.pause(); layer.style.display = 'flex'; } }, 
             toggleFull: function() { if(!this.playingId) return; var b = document.getElementById('vid-box'); if(b.classList.contains('fs')) { this.exitFull(); } else { b.classList.add('fs'); requestNativeFullscreen(b); } },
-            exitFull: function() { document.getElementById('vid-box').classList.remove('fs'); document.getElementById('pause-layer').style.display = 'none'; try { if (document.exitFullscreen) { document.exitFullscreen(); } else if (document.webkitExitFullscreen) { document.webkitExitFullscreen(); } } catch(e) {} this.syncFocusToPlaying(); },
+            
+            exitFull: function() { 
+                document.getElementById('vid-box').classList.remove('fs'); 
+                document.getElementById('pause-layer').style.display = 'none'; 
+                try { if (document.exitFullscreen) { document.exitFullscreen(); } else if (document.webkitExitFullscreen) { document.webkitExitFullscreen(); } } catch(e) {} 
+                
+                if (App.currentMode !== 'live') {
+                    PlayerEngine.hardStop();
+                    App.playingId = null;
+                }
+                
+                this.syncFocusToPlaying(); 
+                App.updateFocus();
+            },
             
             back: function(isTrusted) {
                 if (!isTrusted && new Date().getTime() - (this.lastScreenSwitch || 0) < 500) return;
                 if(document.getElementById('vid-box').classList.contains('fs')) { this.exitFull(); return; }
                 if(this.zone===3) { this.zone=2; this.syncFocusToPlaying(); this.updateFocus(); return; }
                 if(this.zone===2) { 
-                    if(App.currentMode === 'series' && App.fullData.length > 0 && App.fullData[0].is_episode) { App.fullData = App.seriesDataCache; App.idx = App.lastSeriesIdx; App.showingEpisodes = false; App.renderList(); App.updateFocus(); return; } 
+                    if(App.currentMode === 'series' && App.showingEpisodes) { 
+                        App.fullData = App.seriesDataCache; 
+                        App.idx = App.lastSeriesIdx; 
+                        App.showingEpisodes = false; 
+                        document.getElementById('content-layer').classList.add('mode-grid');
+                        App.mobileRenderedPages = Math.floor(App.idx / App.pageSize) + 1;
+                        App.renderList(); App.updateFocus(); return; 
+                    } 
                     this.zone=0; this.idx=(this.lastCatIdx > -1 ? this.lastCatIdx : 0); this.updateFocus(); return; 
                 }
                 if(this.zone===1) { this.zone=2; this.idx=0; this.updateFocus(); return; }
@@ -735,21 +1015,71 @@
                     }
                 }
             },
+
+            getGridCols: function() {
+                var items = document.getElementById('item-list').getElementsByClassName('item');
+                if(items.length < 2) return 1;
+                var firstY = items[0].offsetTop;
+                var cols = 1;
+                for(var i=1; i<items.length; i++) {
+                    if(items[i].offsetTop === firstY) cols++;
+                    else break;
+                }
+                return cols > 0 ? cols : 1;
+            },
             
             move: function(d) {
                 var s = this.scr;
                 if(s===0) { if(d===1 && this.idx < 3) this.idx++; if(d===0 && this.idx > 0) this.idx--; }
-                else if(s===1) { if(this.idx === 0) { if(d===3) this.idx=1; else if(d===0) this.idx=3; } else if(this.idx === 1) { if(d===3) this.idx=2; else if(d===2) this.idx=0; else if(d===0) this.idx=3; } else if(this.idx === 2) { if(d===2) this.idx=1; else if(d===0) this.idx=3; } else if(this.idx === 3) { if(d===1) this.idx=2; } }
-                else if(s===3) { if(this.idx === 0) { if(d===1) this.idx = 1; } else if(this.idx === 1) { if(d===3) this.idx = 2; else if(d===1) this.idx = 3; else if(d===0) this.idx = 0; } else if(this.idx === 2) { if(d===2) this.idx = 1; else if(d===1) this.idx = 3; else if(d===0) this.idx = 0; } else if(this.idx === 3) { if(d===1) this.idx = 4; else if(d===0) this.idx = 1; } else if(this.idx === 4) { if(d===0) this.idx = 3; } }
+                else if(s===1) { if(this.idx === 0) { if(d===3) this.idx=1; else if(d===0) this.idx=3; } else if(this.idx === 1) { if(d===3) this.idx=2; else if(d===2) this.idx=0; else if(d===0) this.idx=3; } else if(this.idx === 2) { if(d===2) this.idx=1; else if(d===0) this.idx=3; } else if(this.idx === 3) { if(d===1) this.idx=0; } }
+                else if(s===3) { if(this.idx === 0) { if(d===1) this.idx = 1; } else if(this.idx === 1) { if(d===1) this.idx = 3; else if(d===3) this.idx = 2; else if(d===0) this.idx = 0; } else if(this.idx === 2) { if(d===1) this.idx = 3; else if(d===2) this.idx = 1; else if(d===0) this.idx = 0; } else if(this.idx === 3) { if(d===1) this.idx = 4; else if(d===0) this.idx = 1; } else if(this.idx === 4) { if(d===0) this.idx = 3; } }
                 else if(s===2) {
                     if(this.zone===3) { if(d===2) { this.zone=2; this.syncFocusToPlaying(); this.updateFocus(); } return; }
-                    if(this.zone===0) { var max = document.getElementById('cat-list').children.length-1; if(d===1 && this.idx<max) this.idx++; if(d===0 && this.idx>0) this.idx--; if(d===3 && App.fullData.length>0) { this.zone=2; this.idx=0; App.renderList(); } }
+                    if(this.zone===0) { 
+                        var max = document.getElementById('cat-list').children.length-1; 
+                        if(d===1 && this.idx<max) this.idx++; 
+                        if(d===0 && this.idx>0) this.idx--; 
+                        if(d===3 && App.fullData.length>0) { this.zone=2; this.idx=0; App.renderList(); } 
+                    }
                     else if(this.zone===2) { 
                         var dataLen = App.fullData.length;
-                        if(d===1) { if(typeof this.idx === 'number' && this.idx < dataLen - 1) { this.idx++; } }
-                        else if(d===0) { if(typeof this.idx === 'number' && this.idx > 0) { this.idx--; } else if(this.idx === 0) { this.zone = 1; } } 
-                        else if(d===2) { this.zone=0; this.idx=(this.lastCatIdx > -1 ? this.lastCatIdx : 0); } 
-                        else if(d===3) { this.zone=3; }
+                        var isGrid = document.getElementById('content-layer').classList.contains('mode-grid');
+
+                        if (isGrid) {
+                            var cols = this.getGridCols();
+                            if(d===1) { 
+                                if(this.idx + cols < dataLen) { this.idx += cols; }
+                                else if(this.idx < dataLen - 1) { this.idx = dataLen - 1; }
+                                if(this.idx >= this.mobileRenderedPages * this.pageSize - cols * 2) { this.loadMoreMobile(); }
+                            }
+                            else if(d===0) { 
+                                if(this.idx - cols >= 0) { this.idx -= cols; }
+                                else { this.zone = 1; }
+                            }
+                            else if(d===2) { 
+                                if(this.idx % cols === 0) { this.zone=0; this.idx=(this.lastCatIdx > -1 ? this.lastCatIdx : 0); }
+                                else if(this.idx > 0) { this.idx--; }
+                            }
+                            else if(d===3) { 
+                                if((this.idx + 1) % cols !== 0 && this.idx < dataLen - 1) { this.idx++; }
+                            }
+                        } else { 
+                            if(d===1) { 
+                                if(typeof this.idx === 'number' && this.idx < dataLen - 1) { 
+                                    this.idx++; 
+                                    if (this.idx >= this.mobileRenderedPages * this.pageSize - 5) { this.loadMoreMobile(); }
+                                } 
+                            }
+                            else if(d===0) { 
+                                if(typeof this.idx === 'number' && this.idx > 0) { 
+                                    this.idx--; 
+                                } else if(this.idx === 0) { 
+                                    this.zone = 1; 
+                                } 
+                            } 
+                            else if(d===2) { this.zone=0; this.idx=(this.lastCatIdx > -1 ? this.lastCatIdx : 0); } 
+                            else if(d===3) { this.zone=3; }
+                        }
                     } else if(this.zone===1) { if(d===1) { this.zone=2; this.idx=0; } if(d===2) { this.zone=0; this.idx=(this.lastCatIdx > -1 ? this.lastCatIdx : 0); } }
                 }
                 this.updateFocus();
@@ -761,10 +1091,11 @@
                 if(currentScr===0) { if(this.idx === 3) this.login(false); else if(this.idx < 3) this.move(1); }
                 else if(currentScr===1) { if(this.idx === 3) this.logout(); else if(this.idx === 0) this.openMode('live', true); else if(this.idx === 1) this.openMode('movie', true); else if(this.idx === 2) this.openMode('series', true); }
                 else if(currentScr===3) { if(this.idx === 1) this.toggleCfg('filter'); else if(this.idx === 2) this.toggleFormat(); else if(this.idx === 3) this.closeSettings(); else if(this.idx === 4) this.logout(); }
-                else if(currentScr===2) { if(this.zone===0) this.catClick(this.idx, true); else if(this.zone===1) this.doSearch(true); else if(this.zone===2) { this.clickItem(); } else if(this.zone===3) this.toggleFull(); }
+                else if(currentScr===2) { if(this.zone===0) this.catClick(this.idx, true); else if(this.zone===1) { document.getElementById('search').blur(); this.doSearch(true); } else if(this.zone===2) { this.clickItem(); } else if(this.zone===3) this.toggleFull(); }
             }
         };
 
+        // Evento de tecla geral
         document.addEventListener('keydown', function(e) {
             var k = e.keyCode;
             
@@ -782,9 +1113,31 @@
             var isChUp = (k===427 || k===33); 
             var isChDown = (k===428 || k===34); 
 
-            if(document.activeElement && document.activeElement.tagName === 'INPUT' && App.scr === 0) { if(isEnter || isDown) { e.preventDefault(); App.move(1); return; } if(isUp) { e.preventDefault(); App.move(0); return; } return; }
-            if(App.scr === 2 && document.activeElement && document.activeElement.tagName === 'INPUT') { if(isEnter) { App.doSearch(true); return; } if(isDown) { e.preventDefault(); App.zone=2; App.idx=0; App.updateFocus(); return; } if(isLeft || isRight) { return; } return; }
+            // Tratamento do campo de Busca
+            if(App.scr === 2 && document.activeElement && document.activeElement.id === 'search') { 
+                if(isEnter) { 
+                    e.preventDefault(); 
+                    document.activeElement.blur(); 
+                    App.doSearch(true); // Aciona a busca global com ENTER
+                    return; 
+                } 
+                if(isDown) { 
+                    e.preventDefault(); 
+                    document.activeElement.blur(); 
+                    App.zone=2; App.idx=0; App.updateFocus(); 
+                    return; 
+                } 
+                if(isLeft || isRight) { return; } // Permite navegar no texto
+                return; // Ignora o resto das setas se estiver digitando
+            }
             
+            // Login input
+            if(document.activeElement && document.activeElement.tagName === 'INPUT' && App.scr === 0) { 
+                if(isEnter || isDown) { e.preventDefault(); App.move(1); return; } 
+                if(isUp) { e.preventDefault(); App.move(0); return; } 
+                return; 
+            }
+
             if(App.scr === 2 && App.currentMode === 'live') {
                 if(isChUp) { e.preventDefault(); App.switchChannel(1); return; }
                 if(isChDown) { e.preventDefault(); App.switchChannel(-1); return; }
@@ -817,7 +1170,7 @@
             if(isRed) if(App.scr===2) App.toggleFull(); 
             if(isGreen) if(App.scr===2) { App.zone=0; App.idx=0; App.updateFocus(); } 
             if(isYellow) if(App.scr===2) { App.zone=1; App.updateFocus(); } 
-            if(isBlue) { e.preventDefault(); if(App.scr===2) App.openSettings(); else if(App.scr===1) App.setScr(2); } 
+            if(isBlue) { e.preventDefault(); if(App.scr===2) App.openSettings(); } 
         });
 
         window.addEventListener('beforeunload', function() { PlayerEngine.hardStop(); });
