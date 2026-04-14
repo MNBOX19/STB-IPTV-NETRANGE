@@ -36,8 +36,8 @@
         .hide { display: none !important; }
         .flex-center { display: flex; align-items: center; justify-content: center; }
         
-        /* Centralização Absoluta para os avisos da lista */
-        .full-center { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; width: 100%; text-align: center; }
+        /* Centralização Absoluta à prova de falhas */
+        .full-center { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 60vh; width: 100%; text-align: center; flex: 1 1 100%; }
         .loader-icon { font-size: 8vh; color: var(--main-color); margin-bottom: 2.5vh; text-shadow: 0 0 15px rgba(255, 215, 0, 0.3); }
         .loader-text { font-size: 2.5vh; font-weight: 800; color: #888; letter-spacing: 2px; }
         
@@ -162,31 +162,29 @@
         ::-webkit-scrollbar-thumb { background: #444; border-radius: 10px; }
 
         /* ============================================================
-           MODO GRADE (VOD/SÉRIES)
+           MODO GRADE (VOD/SÉRIES) - REFEITO PARA TVS ANTIGAS
            ============================================================ */
         .mode-grid .col-play { width: 0; flex: none; border: none; overflow: visible; }
         .mode-grid .meta { display: none; }
         .mode-grid #vid-box:not(.fs) { display: none; }
         .mode-grid .col-list { flex: 1; border-right: none; width: 75%; }
         
+        /* Flexbox Clássico no lugar do CSS Grid */
         .mode-grid .item-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            gap: 20px;
-            padding: 20px;
-            align-content: start;
-        }
-        
-        /* Protege a centralização (full-center) para não bugar no modo grade */
-        .mode-grid .item-list:has(.full-center) {
-            display: flex !important;
-            padding: 0 !important;
+            display: flex;
+            flex-wrap: wrap;
+            align-content: flex-start;
+            justify-content: center; /* Mantém as capas centralizadas */
+            padding: 10px;
         }
         
         .mode-grid .item {
-            display: flex; flex-direction: column; border: none !important;
-            padding: 0 !important; margin: 0 !important;
-            height: 260px; position: relative; border-radius: 8px;
+            display: flex; flex-direction: column; 
+            border: none !important; padding: 0 !important; 
+            margin: 10px !important; /* Margem substitui o 'gap' das TVs novas */
+            width: 160px; /* Largura fixa impede o tijolo gigante */
+            height: 260px; 
+            position: relative; border-radius: 8px;
             overflow: hidden; background: #111;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
@@ -534,7 +532,8 @@
                 if (window.IntersectionObserver) {
                     if (this.imgObserver) this.imgObserver.disconnect();
                     this.imgObserver = new IntersectionObserver(function(entries, observer) {
-                        entries.forEach(function(entry) {
+                        for(var j=0; j<entries.length; j++) {
+                            var entry = entries[j];
                             if (entry.isIntersecting) {
                                 var img = entry.target;
                                 if (img.dataset.src) {
@@ -544,14 +543,21 @@
                                 }
                                 observer.unobserve(img);
                             }
-                        });
+                        }
                     }, { root: document.getElementById('item-list'), rootMargin: '400px 0px' });
                     
                     var imgs = document.querySelectorAll('.lazy-img');
-                    imgs.forEach(function(img) { App.imgObserver.observe(img); });
+                    for (var i = 0; i < imgs.length; i++) {
+                        App.imgObserver.observe(imgs[i]);
+                    }
                 } else {
-                    var imgs = document.querySelectorAll('.lazy-img');
-                    imgs.forEach(function(img) { if(img.dataset.src) { img.src = img.dataset.src; img.classList.add('loaded'); } });
+                    var imgsFallback = document.querySelectorAll('.lazy-img');
+                    for(var k = 0; k < imgsFallback.length; k++) { 
+                        if(imgsFallback[k].dataset.src) { 
+                            imgsFallback[k].src = imgsFallback[k].dataset.src; 
+                            imgsFallback[k].classList.add('loaded'); 
+                        } 
+                    }
                 }
             },
 
