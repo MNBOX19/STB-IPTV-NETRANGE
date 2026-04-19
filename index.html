@@ -8,7 +8,7 @@
     <meta name="theme-color" content="#000000">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     
-    <title>IPTV OSCORP</title>
+    <title>IPTV NETRANGE</title>
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&display=swap" rel="stylesheet">
@@ -20,7 +20,7 @@
             --font-xs: 1.8vh; --font-sm: 2.2vh; --font-md: 3vh; --font-lg: 5vh;
         }
 
-        /* Otimizações de performance (força renderização por hardware onde é seguro) */
+        /* Otimizações de performance pesadas para Smart TV */
         * { 
             margin: 0; padding: 0; box-sizing: border-box; outline: none; 
             -webkit-tap-highlight-color: transparent; -webkit-user-select: none; user-select: none;           
@@ -33,6 +33,14 @@
             transform: translate3d(0,0,0); -webkit-transform: translate3d(0,0,0);
         }
 
+        /* --- ANIMAÇÃO DA LOGO --- */
+        @keyframes pulseGlow {
+            0% { text-shadow: 0 0 5px rgba(255, 215, 0, 0.2); transform: scale(0.98); }
+            50% { text-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 0 0 30px rgba(255, 215, 0, 0.4); transform: scale(1.02); }
+            100% { text-shadow: 0 0 5px rgba(255, 215, 0, 0.2); transform: scale(0.98); }
+        }
+        .animated-logo { display: inline-block; animation: pulseGlow 2.5s infinite ease-in-out; }
+
         .hide { display: none !important; }
         .flex-center { display: flex; align-items: center; justify-content: center; }
         .layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; background: #000; overflow: hidden; }
@@ -44,10 +52,9 @@
         }
         @media screen and (max-width: 768px) and (orientation: portrait) { #orientation-overlay { display: flex !important; } }
 
-        /* Remoção de sombras pesadas para aliviar GPU da Smart TV */
         .focused { 
             border: 3px solid #fff !important; background: var(--main-color) !important; color: #000 !important; 
-            z-index: 50; transform: scale(1.02); transition: transform 0.1s;
+            z-index: 50; transform: scale(1.02) translateZ(0); transition: transform 0.1s;
         }
         .focused i, .focused span, .focused div { color: #000 !important; }
         
@@ -77,7 +84,7 @@
         .power-btn.focused { background: var(--main-color) !important; color: #000 !important; }
 
         .dash-grid { display: flex; gap: 4vw; justify-content: center; align-items: center; flex: 1; width: 100%; }
-        .smart-card { width: 24vw; height: 50vh; background: #101010; border: 1px solid #333; border-radius: 2.5vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .smart-card { width: 24vw; height: 50vh; background: #101010; border: 1px solid #333; border-radius: 2.5vh; display: flex; flex-direction: column; align-items: center; justify-content: center; transform: translateZ(0); }
         .smart-card i { font-size: 15vh; margin-bottom: 4vh; color: #444; }
         .smart-card span { font-size: 3.5vh; font-weight: 900; color: #fff; text-transform: uppercase; }
         .bottom-bar { display: flex; justify-content: space-between; margin-top: auto; padding-bottom: 1vh; flex-shrink: 0; }
@@ -98,10 +105,9 @@
         .cat-top-row { display: flex; align-items: center; width: 100%; }
         .btn-voltar { width: 4vh; height: 4vh; border-radius: 50%; border: 2px solid var(--main-color); display: flex; align-items: center; justify-content: center; font-size: var(--font-sm); margin-right: 1vw; color: var(--main-color); }
         
-        /* CORREÇÃO DO CSS: Adicionado position: relative para o scroll funcionar direito no JS */
-        .cat-list, .item-list { flex: 1; height: 100%; overflow-y: hidden; position: relative; } 
+        .cat-list, .item-list { flex: 1; height: 100%; overflow-y: hidden; position: relative; transform: translateZ(0); } 
         
-        .cat-item, .item { padding: 14px 20px; border-radius: 6px; margin: 6px 12px; color: #888; font-size: var(--font-sm); font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; border: 1px solid transparent; }
+        .cat-item, .item { padding: 14px 20px; border-radius: 6px; margin: 6px 12px; color: #888; font-size: var(--font-sm); font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; border: 1px solid transparent; transform: translateZ(0); }
         .cat-item.active { background: #1a1a1a; color: #fff; border-left: 4px solid var(--main-color); }
         
         .search-area { padding: 15px; background: #050505; border-bottom: 2px solid #1a1a1a; flex-shrink: 0; }
@@ -116,18 +122,19 @@
         .item-list.grid-view .vod-item {
             position: relative; display: inline-block; width: calc(16.666% - 1vw); margin: 0.5vw; height: 32vh; 
             background: #111; border: 3px solid transparent; border-radius: 6px; overflow: hidden; cursor: pointer;
-            vertical-align: top; box-sizing: border-box;
+            vertical-align: top; box-sizing: border-box; transform: translateZ(0);
         }
         
         .item-list.grid-view .vod-item.focused {
             border-color: var(--main-color) !important; background: #111 !important;
-            transform: scale(1.05); z-index: 50;
+            transform: scale(1.05) translateZ(0); z-index: 50;
         }
         
         .item-list.grid-view .vod-item.focused .vod-title { background: var(--main-color) !important; color: #000 !important; }
 
         .vod-cover { position: absolute; top: 0; left: 0; right: 0; bottom: 6vh; background-color: #222; }
-        .vod-cover img { width: 100%; height: 100%; object-fit: contain; background-color: #111; border: none; outline: none; display: block; }
+        /* ALTERADO PARA object-fit: cover PARA REMOVER AS BORDAS PRETAS */
+        .vod-cover img { width: 100%; height: 100%; object-fit: cover; background-color: #111; border: none; outline: none; display: block; }
         
         .vod-rating { position: absolute; top: 0; right: 0; background: #008000; color: #fff; font-weight: 900; font-size: 1.4vh; padding: 0.4vh 0.8vh; border-bottom-left-radius: 6px; z-index: 10; }
 
@@ -145,7 +152,7 @@
         .buffer-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 50; display: none; flex-direction: column; align-items: center; justify-content: center; }
         .buffer-spinner { font-size: 8vh; color: var(--main-color); }
 
-        .meta { padding: 25px; flex: 1; height: 100%; overflow: hidden; background: #0a0a0c; display: flex; flex-direction: column; }
+        .meta { padding: 25px; flex: 1; height: 100%; overflow: hidden; background: #0a0a0c; display: flex; flex-direction: column; transform: translateZ(0); }
         .meta-title { font-size: var(--font-lg); color: var(--main-color); font-weight: 900; margin-bottom: 1vh; }
         .meta-desc { font-size: var(--font-sm); color: #999; margin-bottom: 1vh; }
         
@@ -171,7 +178,7 @@
 
     <div id="login-layer" class="layer flex-center hide">
         <div class="login-box">
-            <div class="logo-txt"><span style="color:#fff">IPTV</span>&nbsp;<span class="theme-text">OSCORP</span></div>
+            <div class="logo-txt animated-logo"><span style="color:#fff">IPTV</span>&nbsp;<span class="theme-text">NETRANGE</span></div>
             <input type="text" id="i0" class="inp focusable" placeholder="URL DNS" autocomplete="off">
             <input type="text" id="i1" class="inp focusable" placeholder="USUÁRIO" autocomplete="off">
             <input type="password" id="i2" class="inp focusable" placeholder="SENHA" autocomplete="off">
@@ -201,7 +208,7 @@
 
     <div id="dash-layer" class="layer hide">
         <div class="top-bar">
-            <div class="dash-logo"><span style="color:#fff">IPTV</span>&nbsp;<span class="theme-text">OSCORP</span></div>
+            <div class="dash-logo animated-logo"><span style="color:#fff">IPTV</span>&nbsp;<span class="theme-text">NETRANGE</span></div>
             <div class="dash-clock"><div id="clock-time" class="clock-time">--:--</div><div id="clock-date" class="clock-date">--/--/----</div></div>
             <div class="top-actions">
                 <div id="m3" class="power-btn focusable" onclick="App.logout()"><i class="fas fa-power-off"></i></div>
@@ -248,7 +255,7 @@
             </div>
             
             <div class="meta">
-                <div id="meta-title" class="meta-title"><span style="color:#fff">IPTV</span>&nbsp;OSCORP</div>
+                <div id="meta-title" class="meta-title animated-logo"><span style="color:#fff">IPTV</span>&nbsp;NETRANGE</div>
                 <div id="meta-desc" class="meta-desc"></div>
                 
                 <div class="keys">
@@ -356,11 +363,15 @@
             categoryDataCache: null, showingEpisodes: false, lastScreenSwitch: 0,
             seriesDataCache: null, lastSeriesIdx: 0, lastTap: 0, tapTimer: null,
             
-            /* VARIAVEIS DE VELOCIDADE (STB Chunking) */
             pageSize: 60, currentRenderLimit: 60,
 
             pad: function(n) { return (n < 10) ? ("0" + n) : n; },
-            smartSort: function(a, b) { var nameA = (a.name || a.title || "").toLowerCase(); var nameB = (b.name || b.title || "").toLowerCase(); try { return nameA.localeCompare(nameB, undefined, { numeric: true, sensitivity: 'base' }); } catch (e) { return nameA < nameB ? -1 : 1; } },
+            // Sort otimizado para TV
+            smartSort: function(a, b) { 
+                var nameA = (a.name || a.title || "").toLowerCase(); 
+                var nameB = (b.name || b.title || "").toLowerCase(); 
+                return nameA < nameB ? -1 : (nameA > nameB ? 1 : 0); 
+            },
 
             i18n: { 'pt': { ph_dns: 'URL DNS', ph_user: 'USUÁRIO', ph_pass: 'SENHA', btn_login: 'CONECTAR', load_init: 'INICIANDO...', load_auth: 'AUTENTICANDO...', load_net: 'REDE...', err_net: 'Falha Conexão', err_auth: 'Login Inválido', set_title: 'MINHA CONTA', set_u: 'USUÁRIO:', set_e: 'VENCE:', set_c: 'TELAS:', set_d: 'CRIADO:', set_opt: 'OPÇÕES', set_filter: 'XXX:', set_format: 'FMT:', set_back: 'VOLTAR', yes: 'SIM', no: 'NÃO', fmt_def: 'PADRÃO', dash_live: 'TV AO VIVO', dash_movie: 'FILMES', dash_series: 'SÉRIES', lbl_exp: 'VENCIMENTO', lbl_conn: 'TELAS', cat_title: 'MENU', cat_fav: '⭐ FAVORITOS', search_ph: 'BUSCAR...', empty: 'Vazio', loading: 'CARREGANDO...', loading_ep: 'EPISÓDIOS...', no_ep: 'Sem episódios.', osd_play: '▶ TOCA', osd_pause: '⏸ PAUSA', osd_lost: 'SEM SINAL', key_fs: 'TELA CHEIA (R)', key_top: 'TOPO (G)', key_search: 'BUSCA (Y)', key_menu: 'MENU (B)', def_movie: 'Filme', def_ep: 'Episódio', unlimited: 'Ilimitado', unknown: 'Desconhecido', btn_out: 'SAIR / DESLOGAR' } },
 
@@ -482,7 +493,7 @@
                 });
             },
             
-            resetInfo: function() { document.getElementById('meta-title').innerHTML = '<span style="color:#fff">IPTV</span>&nbsp;OSCORP'; document.getElementById('meta-desc').innerText = ""; PlayerEngine.hardStop(); document.getElementById('pause-layer').style.display = 'none'; },
+            resetInfo: function() { document.getElementById('meta-title').innerHTML = '<span style="color:#fff">IPTV</span>&nbsp;NETRANGE'; document.getElementById('meta-desc').innerText = ""; PlayerEngine.hardStop(); document.getElementById('pause-layer').style.display = 'none'; },
             
             catClick: function(i, isTrusted) { 
                 if (!isTrusted && new Date().getTime() - (this.lastScreenSwitch || 0) < 500) return;
@@ -750,10 +761,8 @@
                     if(el.tagName!=='INPUT') {
                         var parentContainer = el.parentElement;
                         while(parentContainer && parentContainer !== document.body) {
-                            var style = window.getComputedStyle(parentContainer);
-                            // CORREÇÃO DO JAVASCRIPT: Adicionado parentContainer.id === 'cat-list' || parentContainer.id === 'item-list'
-                            if(style.overflowY === 'auto' || style.overflowY === 'scroll' || parentContainer.id === 'cat-list' || parentContainer.id === 'item-list') {
-                                // Otimizado para STB antigo: scrollTop em vez de scrollTo previne lag e engasgos.
+                            // CÁLCULO DIRETO SEM getComputedStyle (Para não travar a TV)
+                            if(parentContainer.id === 'cat-list' || parentContainer.id === 'item-list' || parentContainer.classList.contains('meta')) {
                                 parentContainer.scrollTop = el.offsetTop - (parentContainer.clientHeight / 2) + (el.clientHeight / 2);
                                 break;
                             }
@@ -829,14 +838,11 @@
 
             if(document.activeElement && document.activeElement.tagName === 'INPUT' && App.scr === 0) { if(isEnter || isDown) { e.preventDefault(); App.move(1); return; } if(isUp) { e.preventDefault(); App.move(0); return; } return; }
             
-            // CORREÇÃO DA BARRA DE PESQUISA (Não ficar preso)
             if(App.scr === 2 && document.activeElement && document.activeElement.tagName === 'INPUT') { 
                 var val = document.activeElement.value || "";
                 if(isEnter) { App.doSearch(true); return; } 
                 if(isDown) { e.preventDefault(); App.zone=2; App.idx=0; App.updateFocus(); return; } 
-                // Se apertar esquerda e estiver vazio, pula pras categorias
                 if(isLeft && val.length === 0) { e.preventDefault(); App.zone=0; App.idx=(App.lastCatIdx > -1 ? App.lastCatIdx : 0); App.updateFocus(); return; }
-                // Deixa o cursor navegar no texto
                 if(isLeft || isRight) { return; } 
                 return; 
             }
