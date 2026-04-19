@@ -98,7 +98,8 @@
         .cat-top-row { display: flex; align-items: center; width: 100%; }
         .btn-voltar { width: 4vh; height: 4vh; border-radius: 50%; border: 2px solid var(--main-color); display: flex; align-items: center; justify-content: center; font-size: var(--font-sm); margin-right: 1vw; color: var(--main-color); }
         
-        .cat-list, .item-list { flex: 1; height: 100%; overflow-y: hidden; } /* Escondemos scrollbar no STB */
+        /* CORREÇÃO DO CSS: Adicionado position: relative para o scroll funcionar direito no JS */
+        .cat-list, .item-list { flex: 1; height: 100%; overflow-y: hidden; position: relative; } 
         
         .cat-item, .item { padding: 14px 20px; border-radius: 6px; margin: 6px 12px; color: #888; font-size: var(--font-sm); font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; border: 1px solid transparent; }
         .cat-item.active { background: #1a1a1a; color: #fff; border-left: 4px solid var(--main-color); }
@@ -750,7 +751,8 @@
                         var parentContainer = el.parentElement;
                         while(parentContainer && parentContainer !== document.body) {
                             var style = window.getComputedStyle(parentContainer);
-                            if(style.overflowY === 'auto' || style.overflowY === 'scroll') {
+                            // CORREÇÃO DO JAVASCRIPT: Adicionado parentContainer.id === 'cat-list' || parentContainer.id === 'item-list'
+                            if(style.overflowY === 'auto' || style.overflowY === 'scroll' || parentContainer.id === 'cat-list' || parentContainer.id === 'item-list') {
                                 // Otimizado para STB antigo: scrollTop em vez de scrollTo previne lag e engasgos.
                                 parentContainer.scrollTop = el.offsetTop - (parentContainer.clientHeight / 2) + (el.clientHeight / 2);
                                 break;
